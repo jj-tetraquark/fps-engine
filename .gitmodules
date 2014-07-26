@@ -1,3 +1,0 @@
-[submodule "compressjs"]
-	path = compressjs
-	url = git://github.com/dfsq/compressJS.sh
