@@ -16,13 +16,19 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+
+        qunit : { 
+            all : ['test/**/*.html']
         }
 
     });
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
 
     grunt.registerTask('default', ['requirejs'])
+    grunt.registerTask('test', ['qunit']);
 
 };
