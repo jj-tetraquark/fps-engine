@@ -3,17 +3,17 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        requirejs : {
-            compile : {
-                options : {
-                    baseUrl : "src/",
-                    mainConfigFile : "src/main.js",
-                    name: "almond",
-                    include : "main",
-                    out : "fps-engine.js",
-                    paths : {
-                        almond : '../node_modules/almond/almond'
-                    }
+        concat: {
+            build: {
+                src: ['src/*.js'],
+                dest: 'fps-engine-dev.js'
+            }
+        },
+
+        uglify: {
+            my_target: {
+                files: {
+                    'fps-engine.js' : ['fps-engine-dev.js']
                 }
             }
         },
@@ -24,11 +24,13 @@ module.exports = function(grunt) {
 
     });
 
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-qunit');
 
 
-    grunt.registerTask('default', ['requirejs'])
+    grunt.registerTask('default', ['concat']);
+    grunt.registerTask('release', ['concat', 'uglify']);
     grunt.registerTask('test', ['qunit']);
 
 };
