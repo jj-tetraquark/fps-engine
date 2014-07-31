@@ -1,3 +1,4 @@
 node_modules/
 fps-engine.js
 fps-engine-dev.js
+*.log
