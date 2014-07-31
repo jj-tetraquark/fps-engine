@@ -16,16 +16,18 @@ module.exports = function(grunt) {
         uglify: {
             my_target: {
                 files: {
-                    target : [dev_target]
+                    'fps-engine.js' : [dev_target]
                 }
             }
         },
 
         jshint: {
             options: {
-                reporter: require('jshint-stylish')
+                reporter: require('jshint-stylish'),
+                proto : true
             },
-            built: [dev_target]
+            built: [dev_target],
+            test : ['test/*.js']
         },
 
         qunit : { 
@@ -34,7 +36,8 @@ module.exports = function(grunt) {
 
         exec : {
            run  :        target_browser + ' development.html',
-           run_release : target_browser + ' production.html'
+           run_release : target_browser + ' production.html',
+           clean :       'rm ' + dev_target + ' ' + target
         }
 
     });
@@ -49,6 +52,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['concat', 'jshint']);
     grunt.registerTask('run', ['exec:run']);
     grunt.registerTask('run_release', ['exec:run_release']);
+    grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('release', ['concat', 'jshint', 'uglify']);
     grunt.registerTask('test', ['qunit']);
 
