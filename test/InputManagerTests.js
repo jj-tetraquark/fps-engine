@@ -6,18 +6,6 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
   };
 };
 
-// PhantomJS doesn't support DOM4 events
-function MakeKeyboardEvent(type, params) {
-    try {
-        var event = new KeyboardEvent(type, params);
-        return event;
-    } catch(e) {
-        var event = document.createEvent('KeyboardEvent');
-        event.initKeyboardEvent(type, true, true, document.defaultView, false, false, false, false, params.keyCode, params.keyCode);
-        return event;
-    }
-}
-
 function GenerateMouseEvent(newX, newY) {
     var event = document.createEvent('MouseEvents'); // change this to use new MouseMove when phantomjs supports it
     event.initMouseEvent('mousemove', true, true, window, 0, 
@@ -52,7 +40,7 @@ function GenerateKeyboardEvent(key, upOrDown) {
     } else {
         keyCode = key.charCodeAt();
     }
-    event = MakeKeyboardEvent('keydown', { keyCode: keyCode});
+    event = window.crossBrowser_initKeyboardEvent(eventType, { keyCode: keyCode});
     document.dispatchEvent(event);
 }
 
@@ -74,7 +62,7 @@ QUnit.test("Test InputManager captures and handles mouse movement", function(ass
     var mouseYPos = inputManager._mouseYPosition;
     GenerateMouseEvent(mouseXPos + 100, mouseYPos);
 
-    movement = inputManager.GetInput();
+    var movement = inputManager.GetInput();
     mouseXPos = inputManager._mouseXPosition;
     mouseYPos = inputManager._mouseYPosition;
 
@@ -94,7 +82,7 @@ QUnit.test("Test mouse movement is zero after a movement and then a stop", funct
     var inputManager = new InputManager();
     
     GenerateMouseEvent(100, 400);
-    movement = inputManager.GetInput();
+    var movement = inputManager.GetInput();
     assert.notEqual(movement.mouseX, 0, "Should have registered movement");
     assert.notEqual(movement.mouseY, 0, "Should have registered movement");
 
@@ -107,8 +95,8 @@ QUnit.test("Test mouse movement is zero after a movement and then a stop", funct
 
 QUnit.test("Test WASD keyboard input registers", function(assert) { 
     var inputManager = new InputManager();
-    var x;
-    document.addEventListener('keydown', function(e) { x = e.keyCode; }, false);
-    GenerateKeyboardEvent('Q', 'down');
-    assert.equal(x, 'Q'.charCodeAt());
+
+    GenerateKeyboardEvent('W', 'down'); // apparently this doesn't fail with grunt...
+    var input = inputManager.GetInput();
+    assert.ok(input.up, "W button was pressed, should have registered as 'up'");
 });
