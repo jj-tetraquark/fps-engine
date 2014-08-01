@@ -6,11 +6,54 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
   };
 };
 
+// PhantomJS doesn't support DOM4 events
+function MakeKeyboardEvent(type, params) {
+    try {
+        var event = new KeyboardEvent(type, params);
+        return event;
+    } catch(e) {
+        var event = document.createEvent('KeyboardEvent');
+        event.initKeyboardEvent(type, true, true, document.defaultView, false, false, false, false, params.keyCode, params.keyCode);
+        return event;
+    }
+}
+
 function GenerateMouseEvent(newX, newY) {
-     var event = document.createEvent('MouseEvents'); // change this to use new MouseMove when phantom supports it
-     event.initMouseEvent('mousemove', true, false, window, 0, 
-             newX, newY, newX, newY, false, false, false, false, 0, null);
-     document.dispatchEvent(event);
+    var event = document.createEvent('MouseEvents'); // change this to use new MouseMove when phantomjs supports it
+    event.initMouseEvent('mousemove', true, true, window, 0, 
+         newX, newY, newX, newY, false, false, false, false, 0, null);
+    document.dispatchEvent(event);
+}
+
+function GenerateKeyboardEvent(key, upOrDown) {
+    eventType = upOrDown == 'up' ? 'keyup' : 'keydown';
+    var keyCode; 
+
+    key = key.toUpperCase();
+
+    if (key.length > 1) {
+        switch (key) {
+            case 'UP':
+                keyCode = 38;
+                break;
+            case 'LEFT':
+                keyCode = 37;
+                break;
+            case 'DOWN':
+                keyCode = 40;
+                break;
+            case 'RIGHT':
+                keyCode = 39;
+                break;
+            default:
+                keyCode = 420;
+                break;
+        }
+    } else {
+        keyCode = key.charCodeAt();
+    }
+    event = MakeKeyboardEvent('keydown', { keyCode: keyCode});
+    document.dispatchEvent(event);
 }
 
 
@@ -59,4 +102,13 @@ QUnit.test("Test mouse movement is zero after a movement and then a stop", funct
     assert.equal(movement.mouseX, 0, "There shouldn't have been any registered movement");
     assert.equal(movement.mouseY, 0, "There shouldn't have been any registered movement");
 
+});
+
+
+QUnit.test("Test WASD keyboard input registers", function(assert) { 
+    var inputManager = new InputManager();
+    var x;
+    document.addEventListener('keydown', function(e) { x = e.keyCode; }, false);
+    GenerateKeyboardEvent('Q', 'down');
+    assert.equal(x, 'Q'.charCodeAt());
 });
