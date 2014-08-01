@@ -10,10 +10,14 @@ function InputManager() {
 }
 
 InputManager.prototype.GetInput = function() {
-    return {
+    input = {
             'mouseX': this._mouseXMovement,
             'mouseY': this._mouseYMovement,
     };
+
+    this._mouseXMovement = 0;
+    this._mouseYMovement = 0;
+    return input;
 };
 
 InputManager.prototype.OnMouseMove = function(event) {

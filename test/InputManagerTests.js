@@ -46,3 +46,17 @@ QUnit.test("Test InputManager captures and handles mouse movement", function(ass
     assert.equal(movement.mouseX, 0, "Mouse should not have moved in X direction");
 
 });
+
+QUnit.test("Test mouse movement is zero after a movement and then a stop", function(assert) {
+    var inputManager = new InputManager();
+    
+    GenerateMouseEvent(100, 400);
+    movement = inputManager.GetInput();
+    assert.notEqual(movement.mouseX, 0, "Should have registered movement");
+    assert.notEqual(movement.mouseY, 0, "Should have registered movement");
+
+    movement = inputManager.GetInput();
+    assert.equal(movement.mouseX, 0, "There shouldn't have been any registered movement");
+    assert.equal(movement.mouseY, 0, "There shouldn't have been any registered movement");
+
+});
