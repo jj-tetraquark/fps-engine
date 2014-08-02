@@ -7,21 +7,28 @@ function DebugConsole() {
     this._debugCategories = [];
 }
 
-DebugConsole.prototype.log = function(category, object) {
-    
+DebugConsole.prototype.Log = function(category, object) {
     var existingCategoryInWindow = this._window.querySelector('#' + category);
-    // update existing
-    var key, valueContainer;
+
     if (existingCategoryInWindow) {
-        for (key in object) {
-            valueContainer = existingCategoryInWindow.querySelector('#' + key);
-            if (valueContainer) {
-                valueContainer.innerText = object[key];
-            } else {
-                console.warn("Error! No such category in debug console");
-            }
-        } 
-    } else { // create new category
+        this.UpdateExistingCategory(existingCategoryInWindow, object);
+    } else { 
+        this.CreateNewDebugCategory(category, object);
+    }
+};
+
+DebugConsole.prototype.UpdateExistingCategory = function(categoryElement, updateObject) {
+    for (var key in updateObject) {
+        var valueContainer = categoryElement.querySelector('#' + key);
+        if (valueContainer) {
+            valueContainer.innerText = updateObject[key];
+        } else {
+            console.error("Error! No such category in debug console");
+        }
+    } 
+};
+
+DebugConsole.prototype.CreateNewDebugCategory = function(category, object) {
         var newCategory = document.createElement('p'); 
         newCategory.id = category;
 
@@ -30,10 +37,10 @@ DebugConsole.prototype.log = function(category, object) {
         categoryTitle.style.marginBottom = 0;
         newCategory.appendChild(categoryTitle);
 
-        for (key in object) {
+        for (var key in object) {
             var valueLabel = document.createElement('span');
-            valueLabel.innerText = key + " : ";
-            valueContainer = document.createElement('span');
+            valueLabel.innerText = "\t" + key + " : ";
+            var valueContainer = document.createElement('span');
             valueContainer.id = key;
             valueContainer.innerText = object[key];
 
@@ -42,6 +49,4 @@ DebugConsole.prototype.log = function(category, object) {
         }
 
         this._window.appendChild(newCategory);
-    }
-        
 };
