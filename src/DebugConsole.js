@@ -25,30 +25,35 @@ DebugConsole.prototype.UpdateExistingCategory = function(categoryElement, update
         if (valueContainer) {
             valueContainer.innerText = updateObject[key];
         } else {
-            console.error("Error! No such category in debug console");
+            this.CreateNewCategoryValue(categoryElement, key, updateObject[key]);
         }
     } 
 };
 
 DebugConsole.prototype.CreateNewDebugCategory = function(category, categoryId, object) {
-        var newCategory = document.createElement('p'); 
-        newCategory.id = categoryId;
+    var newCategory = document.createElement('p'); 
+    newCategory.id = categoryId;
 
-        var categoryTitle = document.createElement('h4');
-        categoryTitle.innerText = category;
-        categoryTitle.style.marginBottom = 0;
-        newCategory.appendChild(categoryTitle);
+    var categoryTitle = document.createElement('h4');
+    categoryTitle.innerText = category;
+    categoryTitle.style.marginBottom = 0;
+    newCategory.appendChild(categoryTitle);
 
-        for (var key in object) {
-            var valueLabel = document.createElement('span');
-            valueLabel.innerText = "\t" + key + " : ";
-            var valueContainer = document.createElement('span');
-            valueContainer.id = key;
-            valueContainer.innerText = object[key];
+    for (var key in object) {
+        this.CreateNewCategoryValue(newCategory, key, object[key]);
+    }
 
-            newCategory.appendChild(valueLabel);
-            newCategory.appendChild(valueContainer);
-        }
+    this._window.appendChild(newCategory);
+};
 
-        this._window.appendChild(newCategory);
+
+DebugConsole.prototype.CreateNewCategoryValue = function(categoryElement, name, value) {
+    var valueLabel = document.createElement('span');
+    valueLabel.innerText = "\t" + name + " : ";
+    var valueContainer = document.createElement('span');
+    valueContainer.id = name;
+    valueContainer.innerText = value;
+
+    categoryElement.appendChild(valueLabel);
+    categoryElement.appendChild(valueContainer);
 };
