@@ -1,1 +1,1 @@
-Main();
+game = new Game();
