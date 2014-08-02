@@ -5,6 +5,9 @@ function InputManager() {
     this._mouseXMovement = 0;
     this._mouseYMovement = 0;
     this._upIsPressed    = false;
+    this._downIsPressed  = false;
+    this._leftIsPressed  = false;
+    this._rightIsPressed = false;
 
     // binds
     document.addEventListener('mousemove', this.OnMouseMove.bind(this), false);
@@ -13,10 +16,13 @@ function InputManager() {
 }
 
 InputManager.prototype.GetInput = function() {
-    input = {
+    var input = {
             'mouseX': this._mouseXMovement,
             'mouseY': this._mouseYMovement,
-            'up'    : this._upIsPressed
+            'up'    : this._upIsPressed,
+            'left'  : this._leftIsPressed,
+            'right' : this._rightIsPressed,
+            'down'  : this._downIsPressed
     };
 
     this._mouseXMovement = 0;
@@ -37,6 +43,15 @@ InputManager.prototype.OnKeyEvent = function(event) {
     switch (event.keyCode) {
         case 87: // W
             this._upIsPressed = isPressed;
+            break;
+        case 65: // A
+            this._leftIsPressed = isPressed;
+            break;
+        case 83: // S
+            this._downIsPressed = isPressed;
+            break;
+        case 68: // D
+            this._rightIsPressed = isPressed;
             break;
         default:
             break;

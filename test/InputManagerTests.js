@@ -14,7 +14,7 @@ function GenerateMouseEvent(newX, newY) {
 }
 
 function GenerateKeyboardEvent(key, upOrDown) {
-    eventType = upOrDown == 'up' ? 'keyup' : 'keydown';
+    var eventType = upOrDown == 'up' ? 'keyup' : 'keydown';
     var keyCode; 
 
     key = key.toUpperCase();
