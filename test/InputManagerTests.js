@@ -101,7 +101,7 @@ QUnit.test("Test WASD keyboard input registers", function(assert) {
         GenerateKeyboardEvent('W', 'down'); // apparently this doesn't fail with phantomjs...but it doesn't work
     }
     catch(e) {
-        console.log("Some tests weren't run, custom key events not supported. Re-run in chrome or another good browser");
+        console.log("Some tests weren't run, custom key events not supported. Re-run a browser with: $ grunt test_extra");
         assert.ok(true, "Dummy test to get grunt qunit to pass");
         return;
     }
