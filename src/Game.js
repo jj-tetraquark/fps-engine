@@ -2,9 +2,9 @@
  * This file contains the main game loop logic
  */
 
-
 function Game() {
     this.inputManager = new InputManager(); 
+    window.DBG = new DebugConsole();
 
     this.startLoop();
 }
@@ -39,6 +39,7 @@ Game.prototype.startLoop = function() {
 
 Game.prototype.Loop = function() {
    var input = this.inputManager.GetInput(); 
+   window.DBG.Log("User Input", input);
 };
 
 

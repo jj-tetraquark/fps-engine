@@ -8,12 +8,14 @@ function DebugConsole() {
 }
 
 DebugConsole.prototype.Log = function(category, object) {
-    var existingCategoryInWindow = this._window.querySelector('#' + category);
+
+    var strippedCategory = category.replace(/ /g,'');
+    var existingCategoryInWindow = this._window.querySelector('#' + strippedCategory);
 
     if (existingCategoryInWindow) {
         this.UpdateExistingCategory(existingCategoryInWindow, object);
     } else { 
-        this.CreateNewDebugCategory(category, object);
+        this.CreateNewDebugCategory(category, strippedCategory, object);
     }
 };
 
@@ -28,9 +30,9 @@ DebugConsole.prototype.UpdateExistingCategory = function(categoryElement, update
     } 
 };
 
-DebugConsole.prototype.CreateNewDebugCategory = function(category, object) {
+DebugConsole.prototype.CreateNewDebugCategory = function(category, categoryId, object) {
         var newCategory = document.createElement('p'); 
-        newCategory.id = category;
+        newCategory.id = categoryId;
 
         var categoryTitle = document.createElement('h4');
         categoryTitle.innerText = category;

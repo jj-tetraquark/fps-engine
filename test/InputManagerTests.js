@@ -1,11 +1,3 @@
-// PhantomJS doesn't support bind yet
-Function.prototype.bind = Function.prototype.bind || function (thisp) {
-  var fn = this;
-  return function () {
-    return fn.apply(thisp, arguments);
-  };
-};
-
 function GenerateMouseEvent(newX, newY) {
     var event = document.createEvent('MouseEvents'); // change this to use new MouseMove when phantomjs supports it
     event.initMouseEvent('mousemove', true, true, window, 0, 

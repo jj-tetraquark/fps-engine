@@ -7,6 +7,9 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         concat: {
+            options : {
+                //banner: "'use strict';\n"
+            },
             build: {
                 src: ['src/*.js'],
                 dest: dev_target
@@ -24,10 +27,22 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
-                proto : true
+                proto : true,
+                browser: true,
+                curly: true,
+                globals: {
+                    webkitRequestAnimationFrame: true,
+                    mozRequestAnimationFrame : true,
+                    console : true,
+                }
             },
             built: [dev_target],
-            test : ['test/*.js']
+            with_overrides: {
+                options: {
+                    browser: false
+                },
+                test : ['test/*.js']
+            }
         },
 
         qunit : { 
