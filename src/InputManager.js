@@ -8,7 +8,8 @@ function InputManager() {
 
     // binds
     document.addEventListener('mousemove', this.OnMouseMove.bind(this), false);
-    document.addEventListener('keydown'  , this.OnKeyDown.bind(this)  , false);
+    document.addEventListener('keydown'  , this.OnKeyEvent.bind(this)  , false);
+    document.addEventListener('keyup'    , this.OnKeyEvent.bind(this)  , false);
 }
 
 InputManager.prototype.GetInput = function() {
@@ -31,10 +32,11 @@ InputManager.prototype.OnMouseMove = function(event) {
    this._mouseYPosition = event.screenY;
 };
 
-InputManager.prototype.OnKeyDown = function(event) {
+InputManager.prototype.OnKeyEvent = function(event) {
+    var isPressed = event.type == 'keydown';
     switch (event.keyCode) {
         case 87: // W
-            this._upIsPressed = true;
+            this._upIsPressed = isPressed;
             break;
         default:
             break;

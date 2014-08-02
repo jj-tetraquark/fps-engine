@@ -35,9 +35,10 @@ module.exports = function(grunt) {
         },
 
         exec : {
-           run  :        target_browser + ' development.html',
+           run         : target_browser + ' development.html',
            run_release : target_browser + ' production.html',
-           clean :       'rm ' + dev_target + ' ' + target
+           clean       : 'rm ' + dev_target + ' ' + target,
+           test_extra  : target_browser + ' test/InputManagerTests.html'
         }
 
     });
@@ -55,5 +56,6 @@ module.exports = function(grunt) {
     grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('release', ['concat', 'jshint', 'uglify']);
     grunt.registerTask('test', ['qunit']);
+    grunt.registerTask('test_extra', ['exec:test_extra']);
 
 };

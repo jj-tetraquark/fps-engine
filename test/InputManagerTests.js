@@ -98,13 +98,28 @@ QUnit.test("Test WASD keyboard input registers", function(assert) {
 
     try {
         var test = new KeyboardEvent('keydown');
-        GenerateKeyboardEvent('W', 'down'); // apparently this doesn't fail with grunt...
+        GenerateKeyboardEvent('W', 'down'); // apparently this doesn't fail with phantomjs...but it doesn't work
     }
     catch(e) {
         console.log("Some tests weren't run, custom key events not supported. Re-run in chrome or another good browser");
         assert.ok(true, "Dummy test to get grunt qunit to pass");
         return;
     }
-    var input = inputManager.GetInput();
-    assert.ok(input.up, "W button was pressed, should have registered as 'up'");
+    
+    var mappings = { 
+        'W' : 'up',
+        'A' : 'left',
+        'S' : 'down',
+        'D' : 'right'
+    };
+
+    for (var key in mappings) {
+        GenerateKeyboardEvent(key, 'down'); 
+        var input = inputManager.GetInput();
+        assert.ok(input[mappings[key]], key + " button was pressed, should have registered as '" + mappings[key] + "'");
+
+        GenerateKeyboardEvent(key, 'up');
+        input = inputManager.GetInput();
+        assert.ok(!input[mappings[key]], key + " button was unpressed, '" + mappings[key] + "' should not be registered");
+    }
 });
