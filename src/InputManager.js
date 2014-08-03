@@ -17,8 +17,8 @@ function InputManager() {
 
 InputManager.prototype.GetInput = function() {
     var input = {
-            'mouseX': this._mouseXMovement,
-            'mouseY': this._mouseYMovement,
+            'mouseDX': this._mouseXMovement,
+            'mouseDY': this._mouseYMovement,
             'up'    : this._upIsPressed,
             'left'  : this._leftIsPressed,
             'right' : this._rightIsPressed,

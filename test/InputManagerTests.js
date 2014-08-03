@@ -59,14 +59,14 @@ QUnit.test("Test InputManager captures and handles mouse movement", function(ass
     mouseYPos = inputManager._mouseYPosition;
 
 
-    assert.equal(movement.mouseX, 100, "Mouse X movement should be 100");
-    assert.equal(movement.mouseY, 0, "Mouse should not have registered as moving in Y direction");
+    assert.equal(movement.mouseDX, 100, "Mouse X movement should be 100");
+    assert.equal(movement.mouseDY, 0, "Mouse should not have registered as moving in Y direction");
 
     GenerateMouseEvent(mouseXPos, mouseYPos -200);
     movement = inputManager.GetInput();
 
-    assert.equal(movement.mouseY, -200, "Mouse Y movement should be -200");
-    assert.equal(movement.mouseX, 0, "Mouse should not have moved in X direction");
+    assert.equal(movement.mouseDY, -200, "Mouse Y movement should be -200");
+    assert.equal(movement.mouseDX, 0, "Mouse should not have moved in X direction");
 
 });
 
@@ -75,12 +75,12 @@ QUnit.test("Test mouse movement is zero after a movement and then a stop", funct
     
     GenerateMouseEvent(100, 400);
     var movement = inputManager.GetInput();
-    assert.notEqual(movement.mouseX, 0, "Should have registered movement");
-    assert.notEqual(movement.mouseY, 0, "Should have registered movement");
+    assert.notEqual(movement.mouseDX, 0, "Should have registered movement");
+    assert.notEqual(movement.mouseDY, 0, "Should have registered movement");
 
     movement = inputManager.GetInput();
-    assert.equal(movement.mouseX, 0, "There shouldn't have been any registered movement");
-    assert.equal(movement.mouseY, 0, "There shouldn't have been any registered movement");
+    assert.equal(movement.mouseDX, 0, "There shouldn't have been any registered movement");
+    assert.equal(movement.mouseDY, 0, "There shouldn't have been any registered movement");
 
 });
 
