@@ -9,6 +9,7 @@ function Game() {
     this.startLoop();
 }
 
+// may be able to replace vendor-sepecifics with requestAnimationFrame
 Game.prototype.startLoop = function() {
     var onEachFrame;
     var self = this;

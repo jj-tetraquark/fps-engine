@@ -19,3 +19,12 @@ QUnit.test("Test construction of Map object", function(assert) {
 
 
 });
+
+QUnit.test("Test map grid accessor", function(assert) {
+    var testMap = new Map([
+                            [0,0],
+                            [0,1]
+                            ]);
+    assert.ok(!testMap.HasWallAt(0,0), "Expect not to find a wall");
+    assert.ok(testMap.HasWallAt(1,1), "Expect to find a wall");
+});
