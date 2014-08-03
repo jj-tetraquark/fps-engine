@@ -27,4 +27,7 @@ QUnit.test("Test map grid accessor", function(assert) {
                             ]);
     assert.ok(!testMap.HasWallAt(0,0), "Expect not to find a wall");
     assert.ok(testMap.HasWallAt(1,1), "Expect to find a wall");
+
+    assert.ok(testMap.HasWallAt(-1,-1, "Outside map should be considered wall"));
+    assert.ok(testMap.HasWallAt(3,3, "Outside map should be considered wall"));
 });
