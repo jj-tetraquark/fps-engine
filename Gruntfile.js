@@ -32,6 +32,7 @@ module.exports = function(grunt) {
                 browser: true,
                 curly: true,
                 undef: true,
+                esnext: true,
                 globals: {
                     webkitRequestAnimationFrame: true,
                     mozRequestAnimationFrame : true,
@@ -43,9 +44,24 @@ module.exports = function(grunt) {
                 options: {
                     curly: true,
                     undef: true,
-                    browser: true
+                    devel: true,
+                    browser: true,
+                    esnext : true,
+                    globals: {
+                        QUnit : true,
+                        KeyboardEvent : true,
+                        // ALL THE OBJECTS - there's probably better way...
+                        DebugConsole: true,
+                        Player : true,
+                        Map : true,
+                        Pose: true,
+                        InputManager : true,
+
+                    }
                 },
-                test : ['test/*.js']
+                files : {
+                    test: ['test/*.js'] 
+                },
             }
         },
 

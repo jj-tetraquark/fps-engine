@@ -32,7 +32,7 @@ function GenerateKeyboardEvent(key, upOrDown) {
     } else {
         keyCode = key.charCodeAt();
     }
-    event = window.crossBrowser_initKeyboardEvent(eventType, { keyCode: keyCode});
+    var event = window.crossBrowser_initKeyboardEvent(eventType, { keyCode: keyCode});
     document.dispatchEvent(event);
 }
 
