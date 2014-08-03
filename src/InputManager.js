@@ -31,8 +31,8 @@ InputManager.prototype.GetInput = function() {
 };
 
 InputManager.prototype.OnMouseMove = function(event) {
-   this._mouseXMovement = event.screenX - this._mouseXPosition;
-   this._mouseYMovement = event.screenY - this._mouseYPosition;
+   this._mouseXMovement = (event.screenX - this._mouseXPosition)/screen.width;
+   this._mouseYMovement = (event.screenY - this._mouseYPosition)/screen.height;
 
    this._mouseXPosition = event.screenX;
    this._mouseYPosition = event.screenY;
