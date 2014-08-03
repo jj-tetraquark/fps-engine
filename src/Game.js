@@ -13,34 +13,29 @@ function Game() {
 Game.prototype.startLoop = function() {
     var onEachFrame;
     var self = this;
-    if (window.webkitRequestAnimationFrame) {
+    if (requestAnimationFrame) {
         onEachFrame = function() {
-            var loop = function() { 
-                self.Loop(); 
-                webkitRequestAnimationFrame(loop); 
-            };
-            loop();
-        };
-    } else if (window.mozRequestAnimationFrame) {
-        onEachFrame = function() {
-            var loop = function() { 
-                self.Loop();
-                mozRequestAnimationFrame(loop); 
+            var loop = function(time) { 
+                seconds = (time - this.lastTime) / 1000;
+                this.lastTime = time;
+                self.Loop(seconds); 
+                requestAnimationFrame(loop); 
             };
             loop();
         };
     } else {
         onEachFrame = function() {
-            setInterval(self.Loop, 1000 / 60);
+            setInterval(self.Loop.bind(1/60), 1000 / 60);
         };
     }
 
     onEachFrame();
 };
 
-Game.prototype.Loop = function() {
+Game.prototype.Loop = function(seconds) {
    var input = this.inputManager.GetInput(); 
    window.DBG.Log("User Input", input);
+   window.DBG.Log("Details", { "FPS" : (1/seconds).toFixed(2) });
 };
 
 
