@@ -62,7 +62,7 @@ DebugConsole.prototype.CreateNewCategoryValue = function(categoryElement, name, 
 };
 
 DebugConsole.prototype.StyleTheConsole = function() {
-    dbgStyle = this.console.style;
+    var dbgStyle = this.console.style;
     dbgStyle.position = 'absolute';
     dbgStyle.top = 0;
     dbgStyle.left = 0;

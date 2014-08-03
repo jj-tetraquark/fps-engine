@@ -31,6 +31,7 @@ module.exports = function(grunt) {
                 proto : true,
                 browser: true,
                 curly: true,
+                undef: true,
                 globals: {
                     webkitRequestAnimationFrame: true,
                     mozRequestAnimationFrame : true,
@@ -41,7 +42,8 @@ module.exports = function(grunt) {
             with_overrides: {
                 options: {
                     curly: true,
-                    browser: false
+                    undef: true,
+                    browser: true
                 },
                 test : ['test/*.js']
             }

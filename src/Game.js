@@ -16,7 +16,7 @@ Game.prototype.startLoop = function() {
     if (requestAnimationFrame) {
         onEachFrame = function() {
             var loop = function(time) { 
-                seconds = (time - this.lastTime) / 1000;
+                var seconds = (time - this.lastTime) / 1000;
                 this.lastTime = time;
                 self.Loop(seconds); 
                 requestAnimationFrame(loop); 
