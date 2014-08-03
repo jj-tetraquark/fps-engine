@@ -27,6 +27,7 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
+                //unused: true, // TODO: put this back in later
                 proto : true,
                 browser: true,
                 curly: true,
@@ -39,6 +40,7 @@ module.exports = function(grunt) {
             built: [dev_target],
             with_overrides: {
                 options: {
+                    curly: true,
                     browser: false
                 },
                 test : ['test/*.js']
