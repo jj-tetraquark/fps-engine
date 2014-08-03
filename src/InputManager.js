@@ -17,12 +17,12 @@ function InputManager() {
 
 InputManager.prototype.GetInput = function() {
     var input = {
-            'mouseDX': this._mouseXMovement,
-            'mouseDY': this._mouseYMovement,
-            'up'    : this._upIsPressed,
-            'left'  : this._leftIsPressed,
-            'right' : this._rightIsPressed,
-            'down'  : this._downIsPressed
+            mouseDX : this._mouseXMovement,
+            mouseDY : this._mouseYMovement,
+            up      : this._upIsPressed,
+            left    : this._leftIsPressed,
+            right   : this._rightIsPressed,
+            down    : this._downIsPressed
     };
 
     this._mouseXMovement = 0;
