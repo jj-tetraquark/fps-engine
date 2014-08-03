@@ -60,5 +60,12 @@ QUnit.test("Test player strafing", function(assert) {
     mockInput.right = false;
     player.HandleInput(mockInput, 0.2);
     assert.propEqual(player.GetPose(), Pose(5, 5.1, Math.PI/2), "Player should have shifted to the left");
-    
+});
+
+QUnit.test("Test player rotation", function(assert) {
+    var player = new Player().WithPose(5, 5, 0);
+    var mockInput = { mouseDX : 0, mouseDY : 0, up : false, left : false, down : false, right : false };
+
+    player.HandleInput(mockInput, 0.1);
+
 });
