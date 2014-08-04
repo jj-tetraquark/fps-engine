@@ -23,7 +23,7 @@ DebugConsole.prototype.UpdateExistingCategory = function(categoryElement, update
     for (var key in updateObject) {
         var valueContainer = categoryElement.querySelector('#' + key);
         if (valueContainer) {
-            valueContainer.innerText = updateObject[key];
+            valueContainer.textContent = updateObject[key];
         } else {
             this.CreateNewCategoryValue(categoryElement, key, updateObject[key]);
         }
@@ -35,7 +35,7 @@ DebugConsole.prototype.CreateNewDebugCategory = function(category, categoryId, o
     newCategory.id = categoryId;
 
     var categoryTitle = document.createElement('h4');
-    categoryTitle.innerText = category;
+    categoryTitle.textContent = category;
     categoryTitle.style.marginBottom = 0;
     newCategory.appendChild(categoryTitle);
 
@@ -49,10 +49,10 @@ DebugConsole.prototype.CreateNewDebugCategory = function(category, categoryId, o
 
 DebugConsole.prototype.CreateNewCategoryValue = function(categoryElement, name, value) {
     var valueLabel = document.createElement('span');
-    valueLabel.innerText = "\t" + name + " : ";
+    valueLabel.textContent = "\t" + name + " : ";
     var valueContainer = document.createElement('span');
     valueContainer.id = name;
-    valueContainer.innerText = value;
+    valueContainer.textContent = value;
     var comma = document.createTextNode(',');
 
     categoryElement.appendChild(valueLabel);
