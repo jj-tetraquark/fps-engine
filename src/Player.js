@@ -1,7 +1,7 @@
 // Monkey Patch Number.toFixed to return a number rather
 // than a string.
 // This should possibly be in another file...
-Number.prototype.toFixed = function(places) {
+Number.prototype.toDecPlaces = function(places) {
     var powerOfTen = Math.pow(10, places);
     var ans = this * powerOfTen;
     ans = Math.round(ans);
@@ -68,15 +68,15 @@ Player.prototype.GetPose = function() {
 Player.prototype._Walk = function(direction, frameTime) {
     var dx = direction * Math.sin(this._pose.Angle) * this._speed * frameTime;
     var dy = direction * Math.cos(this._pose.Angle) * this._speed * frameTime;
-    this._pose.X = (this._pose.X + dx).toFixed(2);
-    this._pose.Y = (this._pose.Y + dy).toFixed(2);
+    this._pose.X = (this._pose.X + dx).toDecPlaces(2);
+    this._pose.Y = (this._pose.Y + dy).toDecPlaces(2);
 };
 
 Player.prototype._Strafe = function(direction, frameTime) {
     var dx = direction * Math.sin(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
     var dy = direction * Math.cos(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
-    this._pose.X = (this._pose.X + dx).toFixed(2);
-    this._pose.Y = (this._pose.Y + dy).toFixed(2);
+    this._pose.X = (this._pose.X + dx).toDecPlaces(2);
+    this._pose.Y = (this._pose.Y + dy).toDecPlaces(2);
 };
 
 Player.prototype._Rotate = function(mouseDX) {

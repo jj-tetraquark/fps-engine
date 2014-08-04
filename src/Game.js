@@ -4,12 +4,12 @@
 
 function Game() {
     this.inputManager = new InputManager(); 
+    this.player = new Player().WithPose(20,20,0);
     window.DBG = new DebugConsole();
 
     this.startLoop();
 }
 
-// may be able to replace vendor-sepecifics with requestAnimationFrame
 Game.prototype.startLoop = function() {
     var onEachFrame;
     var self = this;
@@ -32,10 +32,14 @@ Game.prototype.startLoop = function() {
     onEachFrame();
 };
 
-Game.prototype.Loop = function(seconds) {
-   var input = this.inputManager.GetInput(); 
-   window.DBG.Log("User Input", input);
-   window.DBG.Log("Details", { "FPS" : (1/seconds).toFixed(2) });
+Game.prototype.Loop = function(frameTime) {
+    var input = this.inputManager.GetInput(); 
+    this.player.HandleInput(input, frameTime);
+    var playerPose = this.player.GetPose();
+
+    window.DBG.Log("User Input", input);
+    window.DBG.Log("Details", { "FPS" : (1/frameTime).toFixed(2) });
+    window.DBG.Log("Player pose", playerPose );
 };
 
 

@@ -23,7 +23,7 @@ DebugConsole.prototype.UpdateExistingCategory = function(categoryElement, update
     for (var key in updateObject) {
         var valueContainer = categoryElement.querySelector('#' + key);
         if (valueContainer) {
-            valueContainer.textContent = updateObject[key];
+            this.WriteValue(valueContainer, updateObject[key]);
         } else {
             this.CreateNewCategoryValue(categoryElement, key, updateObject[key]);
         }
@@ -52,13 +52,20 @@ DebugConsole.prototype.CreateNewCategoryValue = function(categoryElement, name, 
     valueLabel.textContent = "\t" + name + " : ";
     var valueContainer = document.createElement('span');
     valueContainer.id = name;
-    valueContainer.textContent = value;
+    this.WriteValue(valueContainer, value);
     var comma = document.createTextNode(',');
 
     categoryElement.appendChild(valueLabel);
     categoryElement.appendChild(valueContainer);
     categoryElement.appendChild(comma);
     
+};
+
+DebugConsole.prototype.WriteValue = function(container, value) {
+    if (typeof(value) === "number") {
+        value = value.toFixed(2);
+    }
+    container.textContent = value;
 };
 
 DebugConsole.prototype.StyleTheConsole = function() {
