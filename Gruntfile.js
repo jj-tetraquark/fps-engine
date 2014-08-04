@@ -20,7 +20,8 @@ module.exports = function(grunt) {
             my_target: {
                 files: {
                     'fps-engine.js' : [dev_target]
-                }
+                },
+                mangle : true
             }
         },
 

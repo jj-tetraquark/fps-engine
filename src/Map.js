@@ -1,4 +1,10 @@
 function Map(lengthOrJson, height) {
+    if (lengthOrJson === undefined) {
+        if(console !== undefined) {
+            console.error("Did not specify map size");
+            return;
+        }
+    }
     if (typeof(lengthOrJson) === "number") {
         if (height === undefined) {
             this._wallGrid = new Uint8Array(lengthOrJson * lengthOrJson);

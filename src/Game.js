@@ -2,9 +2,10 @@
  * This file contains the main game loop logic
  */
 
-function Game() {
+function Game(size) {
     this.inputManager = new InputManager(); 
-    this.player = new Player().WithPose(20,20,0);
+    this.player = new Player().WithPose(size/2,size/2,0);
+    this.map = new Map(size);
     window.DBG = new DebugConsole();
 
     this.startLoop();
