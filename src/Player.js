@@ -14,6 +14,7 @@ const BACKWARDS = -1;
 const LEFT      = -1;
 const RIGHT     =  1;
 
+const FULL_CIRCLE = 2*Math.PI;
 
 function Pose(x, y, angle) {
     return { X : x, Y : y, Angle : angle };
@@ -21,8 +22,9 @@ function Pose(x, y, angle) {
 
 
 function Player() {
-    this._pose = Pose(0, 0, 0);
-    this._speed = 1;
+    this._pose        = Pose(0, 0, 0);
+    this._speed       = 1;
+    this._sensitivity = 1;
 }
 
 // Public:
@@ -38,6 +40,8 @@ Player.prototype.WithPose = function(x, y, angle) {
 
 Player.prototype.HandleInput = function(input, frameTime) {
 
+    this._Rotate(input.mouseDX);
+
     if (input.up) {
         this._Walk(FORWARDS, frameTime);
     } else if (input.down) {
@@ -49,7 +53,10 @@ Player.prototype.HandleInput = function(input, frameTime) {
     } else if (input.right) {
         this._Strafe(RIGHT, frameTime);
     }
+};
 
+Player.prototype.SetSensitivity = function(newSensitivity) {
+   this._sensitivity = newSensitivity; 
 };
 
 Player.prototype.GetPose = function() {
@@ -70,4 +77,9 @@ Player.prototype._Strafe = function(direction, frameTime) {
     var dy = direction * Math.cos(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
     this._pose.X = (this._pose.X + dx).toFixed(2);
     this._pose.Y = (this._pose.Y + dy).toFixed(2);
+};
+
+Player.prototype._Rotate = function(mouseDX) {
+    var dA = mouseDX * FULL_CIRCLE * this._sensitivity;
+    this._pose.Angle += dA;
 };

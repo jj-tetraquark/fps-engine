@@ -66,6 +66,13 @@ QUnit.test("Test player rotation", function(assert) {
     var player = new Player().WithPose(5, 5, 0);
     var mockInput = { mouseDX : 0, mouseDY : 0, up : false, left : false, down : false, right : false };
 
+    mockInput.mouseDX = 0.25;
     player.HandleInput(mockInput, 0.1);
+    assert.equal(player.GetPose().Angle, Math.PI/2, "At default sensitivity, movement across 1/4 screen width is 1/4 of a circle");
 
+    player.SetSensitivity(2);
+    mockInput.mouseDX = -0.25;
+    player.HandleInput(mockInput, 0.1);
+    assert.equal(player.GetPose().Angle, -Math.PI/2, "At twice default sensitivity, movement should be twice as far");
+    
 });
