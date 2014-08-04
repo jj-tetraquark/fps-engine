@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                         Map : true,
                         Pose: true,
                         InputManager : true,
-
+                        loadJSON : true
                     }
                 },
                 files : {
@@ -66,8 +66,23 @@ module.exports = function(grunt) {
         },
 
         qunit : { 
-            all : ['test/**/*.html']
+            all : ['test/*.html'],
+            server_tests : {
+                options : {
+                    urls : ['http://localhost:8000/test/server_tests/MiscTests.html']
+                }
+            }
         },
+
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    base: '.'
+                }
+            }
+        },
+
 
         exec : {
            run         : target_browser + ' development.html',
@@ -81,6 +96,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-exec');
 
@@ -90,7 +106,7 @@ module.exports = function(grunt) {
     grunt.registerTask('run_release', ['exec:run_release']);
     grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('release', ['concat', 'jshint', 'uglify']);
-    grunt.registerTask('test', ['qunit']);
+    grunt.registerTask('test', ['connect', 'qunit']);
     grunt.registerTask('test_extra', ['exec:test_extra']);
 
 };
