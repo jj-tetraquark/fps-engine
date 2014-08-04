@@ -24,6 +24,12 @@ Map.prototype.AssignFromJson = function(json) {
     }
 };
 
+Map.prototype.Randomize = function(json) {
+    for (var i = 0; i < this._wallGrid.length; i++) {
+        this._wallGrid[i] = (Math.random() > 0.6) ? 1 : 0;
+    }
+};
+
 Map.prototype.HasWallAt = function(x,y) {
     if (this.CoordsOutOfRange(x, y)) { // If the element is outside the map, it's treated as wall
         return true;

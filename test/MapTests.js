@@ -31,3 +31,12 @@ QUnit.test("Test map grid accessor", function(assert) {
     assert.ok(testMap.HasWallAt(-1,-1, "Outside map should be considered wall"));
     assert.ok(testMap.HasWallAt(3,3, "Outside map should be considered wall"));
 });
+
+QUnit.test("Test map randomiser", function(assert) {
+    var testMap = new Map(100); // large to reduce statistical chance of generating an identical map
+    var initialWallGrid = new Uint8Array(testMap._wallGrid);
+
+    testMap.Randomize();
+    assert.notDeepEqual(testMap._wallGrid, initialWallGrid);
+    
+});
