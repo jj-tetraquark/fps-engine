@@ -35,7 +35,10 @@ QUnit.test("Test can set reference to player pose", function(assert) {
 QUnit.test("Test can set reference to map", function(assert) {
    
     var renderer = new Renderer2D('testCanvas');
-    renderer.SetMap({ some : "object" });
+    renderer.SetMap({ 
+        GetWallGridWidth : function() {},
+        GetWallGridHeight : function() {}
+    });
 
     assert.ok(true, "Don't need to really test this, just need to make sure the API is there");
 

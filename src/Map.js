@@ -5,12 +5,12 @@ function Map(lengthOrJson, height) {
     if (typeof(lengthOrJson) === "number") {
         if (height === undefined) {
             this._wallGrid = new Uint8Array(lengthOrJson * lengthOrJson);
-            this._height = lengthOrJson;
+            this._wallGridHeight = lengthOrJson;
         } else {
             this._wallGrid = new Uint8Array(lengthOrJson * height);
-            this._height = height;
+            this._wallGridHeight = height;
         }
-        this._width = lengthOrJson;
+        this._wallGridWidth = lengthOrJson;
     } else {
         this.AssignFromJson(lengthOrJson);
     }
@@ -18,10 +18,10 @@ function Map(lengthOrJson, height) {
 
 Map.prototype.AssignFromJson = function(json) {
     this._wallGrid = new Uint8Array(json[0].length * json.length);
-    this._width = json[0].length;
-    this._height = json.length;
-    for (var y = 0; y < this._width; y++) {
-        for (var x = 0; x < this._height; x++) {
+    this._wallGridWidth = json[0].length;
+    this._wallGridHeight = json.length;
+    for (var y = 0; y < this._wallGridWidth; y++) {
+        for (var x = 0; x < this._wallGridHeight; x++) {
             this._Assign(x, y, json[x][y]);
         }
     }
@@ -40,22 +40,22 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
-Map.prototype.GetWidth = function() {
-    return this._width;
+Map.prototype.GetWallGridWidth = function() {
+    return this._wallGridWidth;
 };
 
-Map.prototype.GetHeight = function() {
-    return this._height; 
+Map.prototype.GetWallGridHeight = function() {
+    return this._wallGridHeight; 
 };
 
 Map.prototype._ElementAt = function(x,y) {
-    return this._wallGrid[y * this._width + x];
+    return this._wallGrid[y * this._wallGridWidth + x];
 };
 
 Map.prototype._Assign= function(x, y, value) {
-    this._wallGrid[y * this._width + x] = value;
+    this._wallGrid[y * this._wallGridWidth + x] = value;
 };
 
 Map.prototype._CoordsOutOfRange = function(x, y) {
-    return (x > this._width - 1 || x < 0 || y > this._height - 1 || y < 0);
+    return (x > this._wallGridWidth - 1 || x < 0 || y > this._wallGridHeight - 1 || y < 0);
 };
