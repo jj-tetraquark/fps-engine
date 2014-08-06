@@ -5,10 +5,6 @@ const RIGHT     =  1;
 
 const FULL_CIRCLE = 2*Math.PI;
 
-function Pose(x, y, angle) {
-    return { X : x, Y : y, Angle : angle };
-}
-
 
 function Player() {
     this._pose        = Pose(0, 0, 0);
@@ -68,11 +64,8 @@ Player.prototype._Walk = function(direction, frameTime) {
     
     var newX = (this._pose.X + dx).toDecPlaces(2);
     var newY = (this._pose.Y + dy).toDecPlaces(2);
-
-    if (!this._map.HasWallAt(newX, newY)) {
-        this._pose.X = newX;
-        this._pose.Y = newY;
-    }
+    
+    this._Translate(newX, newY);
 };
 
 Player.prototype._Strafe = function(direction, frameTime) {
@@ -81,14 +74,18 @@ Player.prototype._Strafe = function(direction, frameTime) {
 
     var newX = (this._pose.X + dx).toDecPlaces(2);
     var newY = (this._pose.Y + dy).toDecPlaces(2);
-
-    if (!this._map.HasWallAt(newX, newY)) {
-        this._pose.X = newX;
-        this._pose.Y = newY;
-    }
+    
+    this._Translate(newX, newY);
 };
 
 Player.prototype._Rotate = function(mouseDX) {
     var dA = mouseDX * FULL_CIRCLE * this._sensitivity;
     this._pose.Angle += dA;
+};
+
+Player.prototype._Translate = function(newX, newY) {
+    if (!this._map.HasWallAt(newX, newY)) {
+        this._pose.X = newX;
+        this._pose.Y = newY;
+    }
 };
