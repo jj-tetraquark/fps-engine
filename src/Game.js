@@ -3,10 +3,12 @@
  * Much of the code here is just for testing
  */
 
-function Game(size) {
+function Game(element) {
+    var size = 20;
     this.inputManager = new InputManager(); 
     this.map = new Map(size);
     this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
+    this.renderer = new Renderer2D(element);
     window.DBG = new DebugConsole();
 
     this.startLoop();

@@ -5,4 +5,10 @@ function Renderer2D(canvasElementId) {
 
     this.canvas = element;
     this.ctx    = element.getContext();
+
+//    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 }
+
+Renderer2D.prototype.Draw = function() {
+     
+};

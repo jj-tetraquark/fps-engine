@@ -29,3 +29,12 @@ Number.prototype.toDecPlaces = function(places) {
     ans /= powerOfTen;
     return ans;
 };
+
+// Polyfills for canvas pointer locking
+HTMLCanvasElement.prototype.requestPointerLock = HTMLCanvasElement.prototype.requestPointerLock ||
+    HTMLCanvasElement.prototype.mozRequestPointerLock ||
+    HTMLCanvasElement.prototype.webkitRequestPointerLock;
+
+document.exitPointerLock = document.exitPointerLock ||
+    document.mozExitPointerLock ||
+    document.webkitExitPointerLock;
