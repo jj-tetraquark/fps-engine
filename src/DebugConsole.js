@@ -75,9 +75,10 @@ DebugConsole.prototype.StyleTheConsole = function() {
     dbgStyle.left = 0;
     dbgStyle.height = '200px';
     dbgStyle.width = '700px';
-    dbgStyle.overflowY = 'scroll';
+    dbgStyle.overflow = 'scroll';
     dbgStyle.backgroundColor = 'black';
     dbgStyle.opacity = 0.7;
     dbgStyle.color = "white";
     dbgStyle.fontFamily = "monospace";
+    dbgStyle.whiteSpace = "nowrap";
 };
