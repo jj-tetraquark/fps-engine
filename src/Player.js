@@ -74,15 +74,27 @@ Player.prototype.GetPose = function() {
 Player.prototype._Walk = function(direction, frameTime) {
     var dx = direction * Math.sin(this._pose.Angle) * this._speed * frameTime;
     var dy = direction * Math.cos(this._pose.Angle) * this._speed * frameTime;
-    this._pose.X = (this._pose.X + dx).toDecPlaces(2);
-    this._pose.Y = (this._pose.Y + dy).toDecPlaces(2);
+    
+    var newX = (this._pose.X + dx).toDecPlaces(2);
+    var newY = (this._pose.Y + dy).toDecPlaces(2);
+
+    if (!this._map.HasWallAt(newX, newY)) {
+        this._pose.X = newX;
+        this._pose.Y = newY;
+    }
 };
 
 Player.prototype._Strafe = function(direction, frameTime) {
     var dx = direction * Math.sin(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
     var dy = direction * Math.cos(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
-    this._pose.X = (this._pose.X + dx).toDecPlaces(2);
-    this._pose.Y = (this._pose.Y + dy).toDecPlaces(2);
+
+    var newX = (this._pose.X + dx).toDecPlaces(2);
+    var newY = (this._pose.Y + dy).toDecPlaces(2);
+
+    if (!this._map.HasWallAt(newX, newY)) {
+        this._pose.X = newX;
+        this._pose.Y = newY;
+    }
 };
 
 Player.prototype._Rotate = function(mouseDX) {

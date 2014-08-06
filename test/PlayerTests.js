@@ -73,6 +73,19 @@ QUnit.test("Test player strafing", function(assert) {
     assert.propEqual(player.GetPose(), Pose(5, 5.1, Math.PI/2), "Player should have shifted to the left");
 });
 
+QUnit.test("Test wall collision", function(assert) {
+    var mockMap =  { HasWallAt : function(x, y) { return true; } };
+    var mockInput = { mouseDX : 0, mouseDY : 0, up : false, left : false, down : false, right : false };
+    mockInput.up = true;
+    mockInput.left = true;
+
+    var player = new Player().WithPose(5, 5, 0).OnMap(mockMap);
+    player.HandleInput(mockInput, 0.1);
+
+    assert.propEqual(player.GetPose(), Pose(5, 5, 0), "There are walls everywhere! Player should not have moved");
+
+});
+
 QUnit.test("Test player rotation", function(assert) {
     var player = new Player().WithPose(5, 5, 0);
     var mockInput = { mouseDX : 0, mouseDY : 0, up : false, left : false, down : false, right : false };
