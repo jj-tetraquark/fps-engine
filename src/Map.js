@@ -34,11 +34,19 @@ Map.prototype.Randomize = function(json) {
 };
 
 Map.prototype.HasWallAt = function(x,y) {
-    if (this.CoordsOutOfRange(x, y)) { // If the element is outside the map, it's treated as wall
+    if (this._CoordsOutOfRange(x, y)) { // If the element is outside the map, it's treated as wall
         return true;
     }
     return this._ElementAt(x, y) > 0;
 };
+
+Map.prototype.GetWidth = function() {
+    return this._width;
+}
+
+Map.prototype.GetHeight = function() {
+    return this._height; 
+}
 
 Map.prototype._ElementAt = function(x,y) {
     return this._wallGrid[y * this._width + x];
@@ -48,6 +56,6 @@ Map.prototype._Assign= function(x, y, value) {
     this._wallGrid[y * this._width + x] = value;
 };
 
-Map.prototype.CoordsOutOfRange = function(x, y) {
+Map.prototype._CoordsOutOfRange = function(x, y) {
     return (x > this._width - 1 || x < 0 || y > this._height - 1 || y < 0);
 };
