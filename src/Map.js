@@ -42,11 +42,11 @@ Map.prototype.HasWallAt = function(x,y) {
 
 Map.prototype.GetWidth = function() {
     return this._width;
-}
+};
 
 Map.prototype.GetHeight = function() {
     return this._height; 
-}
+};
 
 Map.prototype._ElementAt = function(x,y) {
     return this._wallGrid[y * this._width + x];

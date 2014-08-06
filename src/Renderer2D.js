@@ -6,7 +6,7 @@ function Renderer2D(canvasElementId) {
     this._canvas        = element;
     this._ctx           = element.getContext();
     this._playerPose    = Pose(-1,-1,0);
-    this._map           = {};
+    this._map           = null;
 
 //    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 }
