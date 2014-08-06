@@ -25,6 +25,7 @@ function Player() {
     this._pose        = Pose(0, 0, 0);
     this._speed       = 1;
     this._sensitivity = 1;
+    this._map         = {};
 }
 
 // Public:
@@ -35,6 +36,11 @@ Player.prototype.WithSpeed = function(speed)  {
 
 Player.prototype.WithPose = function(x, y, angle) {
     this._pose = Pose(x, y, angle);
+    return this;
+};
+
+Player.prototype.OnMap = function(mapInstance) {
+    this._map = mapInstance;
     return this;
 };
 

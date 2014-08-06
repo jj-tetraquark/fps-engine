@@ -15,6 +15,17 @@ QUnit.test("Test setting new player Pose", function(assert) {
     assert.propEqual(player.GetPose(), Pose(4, 5, 3.14), "Should have set player pose to (4, 5, 3.14). Pose is " +  player.GetPose());
 });
 
+QUnit.test("Test setting player Map", function(assert) {
+    var mockMap = { mutableValue : 42 };
+    var player = new Player().OnMap(mockMap);
+    
+    assert.propEqual(player._map, mockMap);
+    
+    // make sure it's a reference and not a copy
+    mockMap.mutableValue++;
+    assert.equal(player._map.mutableValue, mockMap.mutableValue, "Updates to the world map should be known by player");
+});
+
 QUnit.test("Test player translation movement", function(assert) {
     var player = new Player().WithPose(5, 5, 0);
     var mockInput = { mouseDX : 0, mouseDY : 0, up : true, left : false, down : false, right : false };
