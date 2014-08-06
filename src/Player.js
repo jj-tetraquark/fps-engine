@@ -25,7 +25,9 @@ function Player() {
     this._pose        = Pose(0, 0, 0);
     this._speed       = 1;
     this._sensitivity = 1;
-    this._map         = {};
+
+    // By default the player can move anywhere
+    this._map         = { HasWallAt : function(x,y) { return false; }};
 }
 
 // Public:
