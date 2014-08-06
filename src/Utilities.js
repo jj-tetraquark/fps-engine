@@ -1,3 +1,9 @@
+function assert(condition, exception) {
+    if (!condition) {
+        throw exception;
+    }
+}
+
 // Function to load an external json file
 function loadJSON(path, callback) {   
     var xobj = new XMLHttpRequest();

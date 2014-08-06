@@ -4,3 +4,13 @@ QUnit.asyncTest("Test the loadJSON function", function(assert) {
         QUnit.start();
     });
 });
+
+QUnit.test("Test the assert function", function(qassert) {
+    expect(2);
+    qassert.throws(function() {
+        assert(false, "Exception!");
+    }, "Asserted false, should have thrown");
+
+    assert(true, "This should not be thrown");
+    qassert.ok("Should not have asserted again");
+});
