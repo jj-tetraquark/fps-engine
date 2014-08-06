@@ -50,6 +50,7 @@ module.exports = function(grunt) {
                     esnext : true,
                     globals: {
                         QUnit : true,
+                        expect : true,
                         KeyboardEvent : true,
                         // ALL THE OBJECTS - there's probably better way...
                         DebugConsole: true,
@@ -57,7 +58,8 @@ module.exports = function(grunt) {
                         Map : true,
                         Pose: true,
                         InputManager : true,
-                        loadJSON : true
+                        loadJSON : true,
+                        Renderer2D : true 
                     }
                 },
                 files : {
