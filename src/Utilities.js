@@ -1,3 +1,4 @@
+// Good ol' all-purpose assert
 function assert(condition, exception) {
     if (!condition) {
         throw exception;
@@ -18,3 +19,13 @@ function loadJSON(path, callback) {
     };
     xobj.send(null);  
 }
+
+
+// Function rounds a number to a specified number of decimal places
+Number.prototype.toDecPlaces = function(places) {
+    var powerOfTen = Math.pow(10, places);
+    var ans = this * powerOfTen;
+    ans = Math.round(ans);
+    ans /= powerOfTen;
+    return ans;
+};

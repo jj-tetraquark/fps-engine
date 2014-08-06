@@ -1,11 +1,12 @@
 /*
  * This file contains the main game loop logic
+ * Much of the code here is just for testing
  */
 
 function Game(size) {
     this.inputManager = new InputManager(); 
-    this.player = new Player().WithPose(size/2,size/2,0);
     this.map = new Map(size);
+    this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
     window.DBG = new DebugConsole();
 
     this.startLoop();

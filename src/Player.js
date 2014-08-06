@@ -1,14 +1,3 @@
-// Monkey Patch Number.toFixed to return a number rather
-// than a string.
-// This should possibly be in another file...
-Number.prototype.toDecPlaces = function(places) {
-    var powerOfTen = Math.pow(10, places);
-    var ans = this * powerOfTen;
-    ans = Math.round(ans);
-    ans /= powerOfTen;
-    return ans;
-};
-
 const FORWARDS  =  1;
 const BACKWARDS = -1;
 const LEFT      = -1;
