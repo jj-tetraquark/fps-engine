@@ -14,11 +14,12 @@ function Renderer2D(canvasElementId) {
     this._screenHeight  = this._screen.offsetHeight;
 
     // We prerender certain elements for great justice
-    this._preRenderedCanvas   = document.createElement('canvas');
+    this._preRenderedWallGrid = document.createElement('canvas');
+    this._preRenderedPlayer   = document.createElement('canvas');
 
     this._playerPose           = Pose(-1,-1,0);
     this._map                  = null;
-    this._wallCellVisualSize   = 0;
+    this._wallCellVisualSize   = 0; // TODO consider renaming this to something like "gridMultiplier" or "gridToScreenRatio"
     this._wallGridVisualWidth  = 0;
     this._wallGridVisualHeight = 0;
     
@@ -27,6 +28,8 @@ function Renderer2D(canvasElementId) {
     this._screen.width  = this._screenWidth;
 
 //    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
+
+    this._PreRenderPlayerAvatar();
 }
 
 Renderer2D.prototype.SetPlayerPose = function(pose) {
@@ -39,6 +42,53 @@ Renderer2D.prototype.SetMap = function(map) {
     this._CalculateWallGridVisualDimensions();
     this._PreRenderWallGrid();
 };
+
+
+Renderer2D.prototype.Draw = function() {
+    this._ctx.clearRect(0, 0, this._screenWidth, this._screenHeight);
+    this._ctx.drawImage(this._preRenderedWallGrid, 0, 0);
+    this._ctx.save();
+
+    var playerPose = this._GetPlayerPose();
+
+    this._ctx.translate(playerPose.X + 10, playerPose.Y + 10);
+    this._ctx.rotate(this._GetPlayerPose().Angle); 
+    this._ctx.drawImage(this._preRenderedPlayer, -10, -10, 20, 20);
+    this._ctx.restore();
+};
+
+Renderer2D.prototype.FullRedraw = function() {
+    this._PreRenderWallGrid();
+    this.Draw();
+};
+
+// TODO Make this call a function that's passed in. People can pass in their own
+// grid renderers
+Renderer2D.prototype._PreRenderWallGrid = function() {
+    this._preRenderedWallGrid.width = this._wallGridVisualWidth;
+    this._preRenderedWallGrid.height = this._wallGridVisualHeight;
+    var ctx = this._preRenderedWallGrid.getContext('2d');
+    
+    this._DrawGrid(ctx);
+    this._DrawWalls(ctx);
+};
+
+// TODO Same goes for this one, developers can define their own player renderers
+Renderer2D.prototype._PreRenderPlayerAvatar = function() {
+    this._preRenderedPlayer.width = 100;
+    this._preRenderedPlayer.height = 100;
+
+    var ctx = this._preRenderedPlayer.getContext('2d');
+
+    ctx.fillStyle = "#EB3838";
+    ctx.beginPath();
+    ctx.moveTo(50, 0);
+    ctx.lineTo(100,100);
+    ctx.quadraticCurveTo(50,80,0,100);
+    ctx.lineTo(50,0);
+    ctx.fill();
+};
+
 
 Renderer2D.prototype._CalculateWallGridVisualDimensions = function() {
 
@@ -53,27 +103,6 @@ Renderer2D.prototype._CalculateWallGridVisualDimensions = function() {
     
     this._wallGridVisualWidth = this._wallCellVisualSize * numberOfWallGridRows;
     this._wallGridVisualHeight = this._wallCellVisualSize * numberOfWallGridRows;
-};
-
-Renderer2D.prototype.Draw = function() {
-    
-    this._ctx.drawImage(this._preRenderedCanvas, 0, 0);
-    this._ctx.save();
-
-};
-
-Renderer2D.prototype.FullRedraw = function() {
-    this._PreRenderWallGrid();
-    this.Draw();
-};
-
-Renderer2D.prototype._PreRenderWallGrid = function() {
-    this._preRenderedCanvas.width = this._wallGridVisualWidth;
-    this._preRenderedCanvas.height = this._wallGridVisualHeight;
-    var ctx = this._preRenderedCanvas.getContext('2d');
-    
-    this._DrawGrid(ctx);
-    this._DrawWalls(ctx);
 };
 
 Renderer2D.prototype._DrawGrid = function(ctx) {
@@ -103,5 +132,12 @@ Renderer2D.prototype._DrawWalls = function(ctx) {
     }
 };
 
-
+Renderer2D.prototype._GetPlayerPose = function() {
+    var r = this;
+    return { 
+        X     : r._playerPose.X * this._wallCellVisualSize,
+        Y     : r._playerPose.Y * this._wallCellVisualSize,
+        Angle : r._playerPose.Angle + Math.PI
+    };
+};
 
