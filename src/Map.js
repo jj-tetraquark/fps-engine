@@ -29,7 +29,7 @@ Map.prototype.AssignFromJson = function(json) {
 
 Map.prototype.Randomize = function(json) {
     for (var i = 0; i < this._wallGrid.length; i++) {
-        this._wallGrid[i] = (Math.random() > 0.6) ? 1 : 0;
+        this._wallGrid[i] = (Math.random() > 0.8) ? 1 : 0;
     }
 };
 
