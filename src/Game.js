@@ -4,12 +4,16 @@
  */
 
 function Game(element) {
+    window.DBG = new DebugConsole();
+
     var size = 20;
     this.inputManager = new InputManager(); 
     this.map = new Map(size);
     this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
+
     this.renderer = new Renderer2D(element);
-    window.DBG = new DebugConsole();
+    this.renderer.SetMap(this.map);
+    this.renderer.SetPlayerPose(this.player.GetPose());
 
     this.startLoop();
 }
@@ -40,6 +44,8 @@ Game.prototype.Loop = function(frameTime) {
     var input = this.inputManager.GetInput(); 
     this.player.HandleInput(input, frameTime);
     var playerPose = this.player.GetPose();
+
+    this.renderer.Draw();
 
     window.DBG.Log("User Input", input);
     window.DBG.Log("Details", { "FPS" : (1/frameTime).toFixed(2) });
