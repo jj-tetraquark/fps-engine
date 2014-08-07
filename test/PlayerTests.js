@@ -46,6 +46,30 @@ QUnit.test("Test player translation movement", function(assert) {
     mockInput.down  = false;
     player.HandleInput(mockInput, 0.1);
     assert.propEqual(player.GetPose(), Pose(5.1, 5, Math.PI/2));
+
+    // pi/3 rads
+    player = new Player().WithPose(5, 5, Math.PI/3);
+    player.HandleInput(mockInput, 0.1);
+    
+    var dY = 0.1 * Math.cos(Math.PI/3);
+    var dX = 0.1 * Math.sin(Math.PI/3);
+
+    var expectedX = (5 + dX).toDecPlaces(2);
+    var expectedY = (5 + dY).toDecPlaces(2);
+
+    assert.propEqual(player.GetPose(), Pose(expectedX, expectedY, Math.PI/3), "If this fails, you done fucked up the maths");
+
+    // greater than pi angles
+    player = new Player().WithPose(5, 5, 1.4 * Math.PI);
+    player.HandleInput(mockInput, 0.1);
+    
+    dY = - 0.1 * Math.cos(0.4 * Math.PI);
+    dX = - 0.1 * Math.sin(0.4 * Math.PI);
+
+    expectedX = (5 + dX).toDecPlaces(2);
+    expectedY = (5 + dY).toDecPlaces(2);
+
+    assert.propEqual(player.GetPose(), Pose(expectedX, expectedY, 1.4 * Math.PI), "If this fails, you failed to account for larger angles");
 });
 
 QUnit.test("Test player strafing", function(assert) {
