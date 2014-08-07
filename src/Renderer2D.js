@@ -54,7 +54,15 @@ Renderer2D.prototype._CalculateWallGridVisualDimensions = function() {
 
 Renderer2D.prototype.Draw = function() {
 
-    // TODO : Break out in to own function
+    this._DrawGrid();
+    this._DrawWalls();
+
+    this._ctx.save();
+
+};
+
+
+Renderer2D.prototype._DrawGrid = function() {
     for (var x = 0; x <= this._wallGridVisualWidth ; x += this._wallCellVisualSize) {
         this._ctx.moveTo(x, 0);
         this._ctx.lineTo(x, this._wallGridVisualHeight);
@@ -66,5 +74,17 @@ Renderer2D.prototype.Draw = function() {
     }
     this._ctx.strokeStyle = "#ddd"; // TODO: Paramaterise
     this._ctx.stroke();
+};
 
+Renderer2D.prototype._DrawWalls = function() {
+    // Draw walls
+    for (var x = 0; x < this._map.GetWallGridWidth(); x++) {
+        for (var y = 0; y < this._map.GetWallGridHeight(); y++) {
+            if (this._map.HasWallAt(x,y)) {
+                var x1 = x * this._wallCellVisualSize;
+                var y1 = y * this._wallCellVisualSize;
+                this._ctx.fillRect(x1, y1, this._wallCellVisualSize, this._wallCellVisualSize);
+            }
+        }
+    }
 };
