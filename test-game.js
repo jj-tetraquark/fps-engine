@@ -3,3 +3,4 @@
  */
 game = new Game('game');
 game.map.Randomize();
+game.renderer.FullRedraw();
