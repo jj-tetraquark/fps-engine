@@ -41,7 +41,7 @@ function testSetMapReference(assert, Renderer) {
         GetWallGridHeight : function() {}
     });
 
-    assert.ok(true, "Don't need to really test this, just need to make sure the API is there");
+    assert.ok(renderer.SetMap, "Don't need to really test this, just need to make sure the API is there");
 }
 
 
