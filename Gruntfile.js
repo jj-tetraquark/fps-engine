@@ -59,7 +59,8 @@ module.exports = function(grunt) {
                         Pose: true,
                         InputManager : true,
                         loadJSON : true,
-                        Renderer2D : true 
+                        Renderer2D : true,
+                        Renderer3D : true 
                     }
                 },
                 files : {
