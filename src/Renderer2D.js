@@ -51,8 +51,8 @@ Renderer2D.prototype.Draw = function() {
 
     var playerPose = this._GetPlayerPose();
 
-    this._ctx.translate(playerPose.X + 10, playerPose.Y + 10);
-    this._ctx.rotate(this._GetPlayerPose().Angle); 
+    this._ctx.translate(playerPose.X, playerPose.Y);
+    this._ctx.rotate(-this._GetPlayerPose().Angle);  // I'm not entirely sure why this is -ve other than it's fucked without it. 
     this._ctx.drawImage(this._preRenderedPlayer, -10, -10, 20, 20);
     this._ctx.restore();
 };

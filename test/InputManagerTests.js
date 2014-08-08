@@ -58,14 +58,14 @@ QUnit.test("Test InputManager captures and handles mouse movement", function(ass
     mouseXPos = inputManager._mouseXPosition;
     mouseYPos = inputManager._mouseYPosition;
 
-    var expectedDX = 100/screen.width;
+    var expectedDX = 100/window.innerWidth;
     assert.equal(movement.mouseDX, expectedDX, "Mouse X movement should be " + (expectedDX * 100).toFixed(2) + "%");
     assert.equal(movement.mouseDY, 0, "Mouse should not have registered as moving in Y direction");
 
     GenerateMouseEvent(mouseXPos, mouseYPos -200);
     movement = inputManager.GetInput();
 
-    var expectedDY = -200/screen.height;
+    var expectedDY = -200/window.innerHeight;
     assert.equal(movement.mouseDY, expectedDY, "Mouse Y movement should be " + (expectedDY * 100).toFixed(2) + "%");
     assert.equal(movement.mouseDX, 0, "Mouse should not have moved in X direction");
 
