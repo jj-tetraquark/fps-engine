@@ -49,7 +49,9 @@ Map.prototype.GetWallGridHeight = function() {
 };
 
 Map.prototype._ElementAt = function(x,y) {
-    return this._wallGrid[y * this._wallGridWidth + x];
+    var xFloor = Math.floor(x);
+    var yFloor = Math.floor(y); 
+    return this._wallGrid[yFloor * this._wallGridWidth + xFloor];
 };
 
 Map.prototype._Assign= function(x, y, value) {

@@ -87,5 +87,7 @@ Player.prototype._Translate = function(newX, newY) {
     if (!this._map.HasWallAt(newX, newY)) {
         this._pose.X = newX;
         this._pose.Y = newY;
+    } else {
+        console.log('collide');
     }
 };
