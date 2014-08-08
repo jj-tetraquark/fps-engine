@@ -80,7 +80,7 @@ Player.prototype._Strafe = function(direction, frameTime) {
 
 Player.prototype._Rotate = function(mouseDX) {
     var dA = mouseDX * FULL_CIRCLE * this._sensitivity;
-    this._pose.Angle += dA;
+    this._pose.Angle -= dA;
 };
 
 Player.prototype._Translate = function(newX, newY) {
