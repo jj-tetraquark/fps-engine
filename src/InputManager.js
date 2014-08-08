@@ -31,11 +31,11 @@ InputManager.prototype.GetInput = function() {
 };
 
 InputManager.prototype.OnMouseMove = function(event) {
-   this._mouseXMovement = (event.screenX - this._mouseXPosition)/screen.width;
-   this._mouseYMovement = (event.screenY - this._mouseYPosition)/screen.height;
+   this._mouseXMovement = (event.clientX - this._mouseXPosition)/screen.width;
+   this._mouseYMovement = (event.clientY - this._mouseYPosition)/screen.height;
 
-   this._mouseXPosition = event.screenX;
-   this._mouseYPosition = event.screenY;
+   this._mouseXPosition = event.clientX;
+   this._mouseYPosition = event.clientY;
 };
 
 InputManager.prototype.OnKeyEvent = function(event) {

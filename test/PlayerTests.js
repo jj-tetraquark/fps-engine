@@ -78,23 +78,23 @@ QUnit.test("Test player strafing", function(assert) {
 
     mockInput.left = true;
     player.HandleInput(mockInput, 0.1);
-    assert.propEqual(player.GetPose(), Pose(4.9, 5, 0), "Player should have shifted to the left");
+    assert.propEqual(player.GetPose(), Pose(5.1, 5, 0), "Player should have shifted to the left");
 
     mockInput.left  = false;
     mockInput.right = true;
     player.HandleInput(mockInput, 0.2);
-    assert.propEqual(player.GetPose(), Pose(5.1, 5, 0), "Player should have shifted to the right");
+    assert.propEqual(player.GetPose(), Pose(4.9, 5, 0), "Player should have shifted to the right");
 
     player = new Player().WithPose(5, 5, Math.PI/2);
     mockInput.left = false;
     mockInput.right = true;
     player.HandleInput(mockInput, 0.1);
-    assert.propEqual(player.GetPose(), Pose(5, 4.9, Math.PI/2), "Player should have shifted to the right");
+    assert.propEqual(player.GetPose(), Pose(5, 5.1, Math.PI/2), "Player should have shifted to the right");
     
     mockInput.left = true;
     mockInput.right = false;
     player.HandleInput(mockInput, 0.2);
-    assert.propEqual(player.GetPose(), Pose(5, 5.1, Math.PI/2), "Player should have shifted to the left");
+    assert.propEqual(player.GetPose(), Pose(5, 4.9, Math.PI/2), "Player should have shifted to the left");
 });
 
 QUnit.test("Test wall collision", function(assert) {

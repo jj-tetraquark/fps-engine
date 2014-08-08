@@ -69,8 +69,8 @@ Player.prototype._Walk = function(direction, frameTime) {
 };
 
 Player.prototype._Strafe = function(direction, frameTime) {
-    var dx = direction * Math.sin(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
-    var dy = direction * Math.cos(this._pose.Angle + Math.PI/2) * this._speed * frameTime;
+    var dx = direction * Math.sin(this._pose.Angle - Math.PI/2) * this._speed * frameTime;
+    var dy = direction * Math.cos(this._pose.Angle - Math.PI/2) * this._speed * frameTime;
 
     var newX = (this._pose.X + dx).toDecPlaces(2);
     var newY = (this._pose.Y + dy).toDecPlaces(2);
