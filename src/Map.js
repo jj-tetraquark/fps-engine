@@ -34,7 +34,8 @@ Map.prototype.Randomize = function(json) {
 };
 
 Map.prototype.HasWallAt = function(x,y) {
-    if (this._CoordsOutOfRange(x, y)) { // If the element is outside the map, it's treated as wall
+    if (this._CoordsOutOfRange(x, y)) { 
+        // If the element is outside the map, it's treated as wall
         return true;
     }
     return this._ElementAt(x, y) > 0;
