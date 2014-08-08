@@ -12,6 +12,9 @@ function Renderer3D(canvasElementId) {
     this._screenWidth   = this._screen.offsetWidth;
     this._screenHeight  = this._screen.offsetHeight;
 
+    this._resolution    = 320;
+    this._drawDistance  = 14;
+
 
     // Fix the drawable area dimensions
     this._screen.height = this._screenHeight;
@@ -19,6 +22,17 @@ function Renderer3D(canvasElementId) {
 
 //    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 }
+
+Renderer3D.prototype.WithResolution = function(resolution) {
+    this._resolution = resolution;
+    return this;
+};
+
+Renderer3D.prototype.WithFogAndDrawDistance = function(fog, draw) {
+    assert(draw > fog, "Fog distance can't be greater than the draw distance!");
+    this._drawDistance = draw;
+    this._fogDistance  = fog;
+};
 
 Renderer3D.prototype.SetPlayerPose = function(pose) {
     this._playerPose = pose;
@@ -46,3 +60,6 @@ Renderer3D.prototype._GetPlayerPose = function() {
     };
 };
 
+Renderer3D.prototype._DrawWallColumns = function() {
+
+};
