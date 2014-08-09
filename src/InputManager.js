@@ -40,6 +40,8 @@ InputManager.prototype.OnMouseMove = function(event) {
 
 InputManager.prototype.OnKeyEvent = function(event) {
     var isPressed = event.type == 'keydown';
+
+    // TODO - Map other key presses to custom events
     switch (event.keyCode) {
         case 87: // W
             this._upIsPressed = isPressed;
@@ -56,4 +58,5 @@ InputManager.prototype.OnKeyEvent = function(event) {
         default:
             break;
     }
+
 };

@@ -49,10 +49,10 @@ Renderer2D.prototype.Draw = function() {
     this._ctx.drawImage(this._preRenderedWallGrid, 0, 0);
     this._ctx.save();
 
-    var playerPose = this._GetPlayerPose();
+    var playerPose = this._GetVisualPlayerPose();
 
     this._ctx.translate(playerPose.X, playerPose.Y);
-    this._ctx.rotate(-this._GetPlayerPose().Angle);  // I'm not entirely sure why this is -ve other than it's fucked without it. 
+    this._ctx.rotate(-playerPose.Angle); // -ve because we're rotating the whole canvas, remember? 
     this._ctx.drawImage(this._preRenderedPlayer, -10, -10, 20, 20);
     this._ctx.restore();
 };
@@ -115,7 +115,7 @@ Renderer2D.prototype._DrawGrid = function(ctx) {
         ctx.moveTo(0, y);
         ctx.lineTo(this._wallGridVisualWidth, y);
     }
-    ctx.strokeStyle = "#ddd"; // TODO: Paramaterise
+    ctx.strokeStyle = "#ddd"; // TODO: Parameterise
     ctx.stroke();
 };
 
@@ -132,12 +132,12 @@ Renderer2D.prototype._DrawWalls = function(ctx) {
     }
 };
 
-Renderer2D.prototype._GetPlayerPose = function() {
+Renderer2D.prototype._GetVisualPlayerPose = function() {
     var r = this;
     return { 
         X     : r._playerPose.X * this._wallCellVisualSize,
         Y     : r._playerPose.Y * this._wallCellVisualSize,
-        Angle : r._playerPose.Angle + Math.PI
-    };
+        Angle : r._playerPose.Angle + Math.PI // We add a half circle because zero angle
+    };                                        // is stright down rather than up 
 };
 

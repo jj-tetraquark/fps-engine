@@ -12,8 +12,10 @@ function Renderer3D(canvasElementId) {
     this._screenWidth   = this._screen.offsetWidth;
     this._screenHeight  = this._screen.offsetHeight;
 
-    this._resolution    = 320;
+    this._resolution    = 320; // number of rays
+    this._focalLength   = Math.PI/4;
     this._drawDistance  = 14;
+    this._fogDistance   = 8;
 
 
     // Fix the drawable area dimensions
@@ -32,6 +34,12 @@ Renderer3D.prototype.WithFogAndDrawDistance = function(fog, draw) {
     assert(draw > fog, "Fog distance can't be greater than the draw distance!");
     this._drawDistance = draw;
     this._fogDistance  = fog;
+    return this;
+};
+
+Renderer3D.prototype.WithFocalLength = function(focalLength) {
+    this._focalLength = focalLength;
+    return this;
 };
 
 Renderer3D.prototype.SetPlayerPose = function(pose) {
@@ -44,22 +52,32 @@ Renderer3D.prototype.SetMap = function(map) {
 
 
 Renderer3D.prototype.Draw = function() {
-
+    
 };
 
 Renderer3D.prototype.FullRedraw = function() {
     this.Draw();
 };
 
-Renderer3D.prototype._GetPlayerPose = function() {
-    var r = this;
-    return { 
-        X     : r._playerPose.X * this._wallCellVisualSize,
-        Y     : r._playerPose.Y * this._wallCellVisualSize,
-        Angle : r._playerPose.Angle + Math.PI
-    };
+Renderer3D.prototype._DrawWallColumns = function() {
+    for (var column = 0; column < this.resolution; column++) {
+        // Imagine rays are coming from a distance, meeting at a point, crossing over and projecting
+        // on a screen. focalLength is the distance between the point and the screen, focalWidth is
+        // the distance of the projection from the centre. 
+
+        var focalWidth = column / this.resolution -0.5; // We minus 0.5 because we want the centre angle to be 0
+        var angle = Math.atan2(focalWidth, this._focalLength);
+
+        var globalAngle = angle + this._playerPose.Angle;
+        var rayTerminationCoords = this._CastRay(globalAngle);
+
+    }
 };
 
-Renderer3D.prototype._DrawWallColumns = function() {
+Renderer3D.prototype._CastRay = function(angle) {
+    var rayFunction = this._CalculateRayFunction(angle);   
+};
 
+Renderer3D.prototype._CalculateRayFunction = function(angle) {
+    
 };
