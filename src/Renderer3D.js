@@ -44,10 +44,12 @@ Renderer3D.prototype.WithFocalLength = function(focalLength) {
 
 Renderer3D.prototype.SetPlayerPose = function(pose) {
     this._playerPose = pose;
+    return this;
 };
 
 Renderer3D.prototype.SetMap = function(map) {
     this._map = map;
+    return this;
 };
 
 
@@ -75,9 +77,23 @@ Renderer3D.prototype._DrawWallColumns = function() {
 };
 
 Renderer3D.prototype._CastRay = function(angle) {
-    var rayFunction = this._CalculateRayFunction(angle);   
+    var stepLength = 0.1;
+    var stepX = Math.sin(angle);
+    var stepY = Math.cos(angle);
+
+    //floating point weirdness
+    stepX = stepX.toDecPlaces(6);
+    stepY = stepY.toDecPlaces(6);
+
+    for (var step = 0; step < this._drawDistance; step += stepLength) {
+        var x = this._playerPose.X + step * stepX;
+        var y = this._playerPose.Y + step * stepY;
+
+        if (this._map.HasWallAt(x,y)) {
+            return { X : Math.floor(x), Y: Math.floor(y) };
+        }
+    }
+
+    return { X : 0, Y : 0};
 };
 
-Renderer3D.prototype._CalculateRayFunction = function(angle) {
-    
-};
