@@ -91,12 +91,14 @@ Renderer3D.prototype._CastRay = function(angle, stepLength) {
 
         if (this._map.HasWallAt(x,y)) {
             
-            var intersectionpoint = this._map.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
+            var intersection = this._map.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
+            var distance     = this._map.GetDistance(this._playerPose.X, this._playerPose.Y, 
+                                                     intersection.X, intersection.Y);
             
-            return { X : x, Y: y };
+            return { X : x, Y: y, Distance: distance };
         }
     }
-    return { X : Infinity, Y : Infinity};
+    return { X : Infinity, Y : Infinity, Distance: Infinity};
 };
 
 Renderer3D.prototype._DrawColumn = function(column, rayTerminationCoords, angle) {

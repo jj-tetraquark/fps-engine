@@ -41,6 +41,7 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
+// TODO make this more efficient and refactor
 Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
     var dx = x2 - x1;
     var dy = y2 - y1;
@@ -50,21 +51,29 @@ Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
 
     var minX = Math.min(x1, x2);
     var maxX = Math.max(x1, x2);
-    var minY = Math.min(x1, x2);
-    var maxY = Math.max(x1, x2);
+    var minY = Math.min(y1, y2);
+    var maxY = Math.max(y1, y2);
 
-    function getLineY(x) {
+    function getYCoord(x) {
+        if(!isFinite(gradient)) {
+            return Infinity;
+        }
         return gradient * x + c;
     }
 
-    function getLineX(y) {
+    function getXCoord(y) {
+        if(!isFinite(gradient)) {
+            return x1;
+        }
         return (y - c)/gradient;
     }
 
     function isWithinBounds(x, y) {
-        return (x > minX && x < maxX) && (y > minY && y < minY);
+        return (x >= minX && x <= maxX) && (y >= minY && y <= maxY);
     }
 
+    // TODO - shouldn't have to check every single one, should be able
+    // to infer which vertex from ray trajectory. 
     // Lines that define the wall cell that's been intersected
     var yBoxTop     = Math.ceil(y2);
     var yBoxBottom  = Math.ceil(y2);
@@ -72,8 +81,26 @@ Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
     var xBoxRight   = Math.ceil(x2);
 
     // run each through the line equation and see if answers are within bounds
-    
-}
+    var intersections = [ { X: getXCoord(yBoxTop)   , Y: yBoxTop },
+                          { X: getXCoord(yBoxBottom), Y: yBoxBottom},
+                          { X: xBoxLeft             , Y: getYCoord(xBoxLeft)},
+                          { X: xBoxRight            , Y: getYCoord(xBoxRight)}
+    ];
+
+    for (var i = 0; i < intersections.length; i++) {
+        var coord = intersections[i];
+        if (isWithinBounds(coord.X, coord.Y)) {
+            return coord;
+        }
+    }
+};
+
+Map.prototype.GetDistance = function(x1, y1, x2, y2) {
+    // pythagorus
+    var side1Squared = Math.pow(x1 - x2, 2);
+    var side2Squared = Math.pow(y1 - y2, 2);
+    return Math.sqrt(side1Squared + side2Squared);
+};
 
 Map.prototype.GetWallGridWidth = function() {
     return this._wallGridWidth;
