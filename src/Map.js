@@ -45,6 +45,34 @@ Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
     var dx = x2 - x1;
     var dy = y2 - y1;
     
+    var gradient = dy/dx;
+    var c = y1 - gradient*x1; // y - m*x = c;
+
+    var minX = Math.min(x1, x2);
+    var maxX = Math.max(x1, x2);
+    var minY = Math.min(x1, x2);
+    var maxY = Math.max(x1, x2);
+
+    function getLineY(x) {
+        return gradient * x + c;
+    }
+
+    function getLineX(y) {
+        return (y - c)/gradient;
+    }
+
+    function isWithinBounds(x, y) {
+        return (x > minX && x < maxX) && (y > minY && y < minY);
+    }
+
+    // Lines that define the wall cell that's been intersected
+    var yBoxTop     = Math.ceil(y2);
+    var yBoxBottom  = Math.ceil(y2);
+    var xBoxLeft    = Math.floor(x2);
+    var xBoxRight   = Math.ceil(x2);
+
+    // run each through the line equation and see if answers are within bounds
+    
 }
 
 Map.prototype.GetWallGridWidth = function() {
