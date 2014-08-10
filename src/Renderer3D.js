@@ -94,6 +94,6 @@ Renderer3D.prototype._CastRay = function(angle) {
         }
     }
 
-    return { X : 0, Y : 0};
+    return { X : Infinity, Y : Infinity};
 };
 

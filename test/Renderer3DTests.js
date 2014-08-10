@@ -59,7 +59,17 @@ QUnit.test("Test ray casting", function(assert) {
     rayDestination = renderer._CastRay(-Math.PI/4);
     assert.deepEqual(rayDestination, { X : 0, Y : 3 });
 
+    // check out of range
+    
+    var map5 = new Map([
+                       [0,0,0,0,0,0,0,0,0,1],
+                       [0,0,0,0,0,0,0,0,0,0]
+                       ]);
 
+    player = new Player().WithPose(0,0,0).OnMap(map5);
+    renderer.SetPlayerPose(player.GetPose()).SetMap(map5).WithFogAndDrawDistance(6,8);
 
+    rayDestination = renderer._CastRay(Math.PI/2);
+    assert.deepEqual(rayDestination, { X : Infinity, Y : Infinity });
 
 });
