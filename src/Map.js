@@ -20,9 +20,9 @@ Map.prototype.AssignFromJson = function(json) {
     this._wallGrid = new Uint8Array(json[0].length * json.length);
     this._wallGridWidth = json[0].length;
     this._wallGridHeight = json.length;
-    for (var y = 0; y < this._wallGridWidth; y++) {
-        for (var x = 0; x < this._wallGridHeight; x++) {
-            this._Assign(x, y, json[x][y]);
+    for (var y = 0; y < this._wallGridHeight; y++) {
+        for (var x = 0; x < this._wallGridWidth; x++) {
+            this._Assign(x, y, json[y][x]);
         }
     }
 };
