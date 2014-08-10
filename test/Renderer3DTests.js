@@ -16,7 +16,8 @@ QUnit.test("Test ray casting", function(assert) {
 
     // Yeah I'm testing private methods, fuck you
     var rayDestination =  renderer._CastRay(Math.PI/4);
-    assert.deepEqual(rayDestination, { X : 3, Y : 4 });
+    var rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 3, Y : 4 });
 
     // Let's try that again
     var map2 = new Map([
@@ -30,7 +31,8 @@ QUnit.test("Test ray casting", function(assert) {
     renderer.SetPlayerPose(player.GetPose()).SetMap(map2);
 
     rayDestination = renderer._CastRay(-2.16);
-    assert.deepEqual(rayDestination, { X : 0, Y : 0 });
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 0, Y : 0 });
 
     // and again
     var map3 = new Map([
@@ -44,7 +46,8 @@ QUnit.test("Test ray casting", function(assert) {
     renderer.SetPlayerPose(player.GetPose()).SetMap(map3);
 
     rayDestination = renderer._CastRay(Math.PI);
-    assert.deepEqual(rayDestination, { X : 2, Y : 0 });
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 2, Y : 0 });
 
     var map4 = new Map([
                        [0,0,0,0],
@@ -57,7 +60,8 @@ QUnit.test("Test ray casting", function(assert) {
     renderer.SetPlayerPose(player.GetPose()).SetMap(map4);
 
     rayDestination = renderer._CastRay(-Math.PI/4);
-    assert.deepEqual(rayDestination, { X : 0, Y : 3 });
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 0, Y : 3 });
 
     // check out of range
     

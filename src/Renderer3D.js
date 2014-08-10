@@ -93,7 +93,7 @@ Renderer3D.prototype._CastRay = function(angle, stepLength) {
             
             var intersectionpoint = this._map.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
             
-            return { X : Math.floor(x), Y: Math.floor(y) }; // Don't floor these!
+            return { X : x, Y: y };
         }
     }
     return { X : Infinity, Y : Infinity};
