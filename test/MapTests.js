@@ -43,3 +43,14 @@ QUnit.test("Test map randomiser", function(assert) {
     assert.notDeepEqual(testMap._wallGrid, initialWallGrid);
     
 });
+
+QUnit.test("Test GetIntersectionPoint", function(assert) {
+    var testMap = new Map([
+                          [0,0,0],
+                          [0,1,0],
+                          [0,0,0]
+                          ]);
+    
+    var intersect = testMap.GetWallIntersectionPoint(0.5, 1.5, 1.2, 1.5);  // simple translation across x axis
+    assert.deepEqual(intersect, { X : 1, Y : 1.5 });
+});

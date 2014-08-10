@@ -41,6 +41,12 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
+Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+    
+}
+
 Map.prototype.GetWallGridWidth = function() {
     return this._wallGridWidth;
 };

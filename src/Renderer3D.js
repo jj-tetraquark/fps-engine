@@ -90,10 +90,15 @@ Renderer3D.prototype._CastRay = function(angle, stepLength) {
         var y = this._playerPose.Y + step * stepY;
 
         if (this._map.HasWallAt(x,y)) {
-            return { X : Math.floor(x), Y: Math.floor(y) };
+            
+            var intersectionpoint = this._map.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
+            
+            return { X : Math.floor(x), Y: Math.floor(y) }; // Don't floor these!
         }
     }
-
     return { X : Infinity, Y : Infinity};
 };
 
+Renderer3D.prototype._DrawColumn = function(column, rayTerminationCoords, angle) {
+
+};
