@@ -76,8 +76,8 @@ Renderer3D.prototype._DrawWallColumns = function() {
     }
 };
 
-Renderer3D.prototype._CastRay = function(angle) {
-    var stepLength = 0.1;
+Renderer3D.prototype._CastRay = function(angle, stepLength) {
+    stepLength = stepLength || 0.1;
     var stepX = Math.sin(angle);
     var stepY = Math.cos(angle);
 
