@@ -54,3 +54,64 @@ QUnit.test("Test GetIntersectionPoint", function(assert) {
     var intersect = testMap.GetWallIntersectionPoint(0.5, 1.5, 1.2, 1.5);  // simple translation across x axis
     assert.deepEqual(intersect, { X : 1, Y : 1.5 });
 });
+
+QUnit.test("Test ray casting", function(assert) {
+
+    var map = new Map([
+                      [0,0,0,0,0],
+                      [0,0,0,0,0],
+                      [0,0,0,0,0], // player in this row
+                      [0,0,0,0,0],
+                      [0,0,0,1,0],
+                      ]);
+   
+    var rayDestination =  map.CastRay(Math.PI/4, Pose(1,2,0), 14);
+    var rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 3, Y : 4 });
+
+    // Let's try that again
+    var map2 = new Map([
+                       [1,0,0,0],
+                       [0,0,0,0],
+                       [0,0,0,0], // player on end of this road;
+                       [0,0,0,0]
+                       ]);
+
+    rayDestination = map2.CastRay(-2.16, Pose(3,2,0), 14);
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 0, Y : 0 });
+
+    // and again
+    var map3 = new Map([
+                       [0,0,1,0],
+                       [0,0,0,0],
+                       [0,0,0,0],
+                       [0,0,0,0]
+                       ]);
+
+    rayDestination = map3.CastRay(Math.PI, Pose(2,3,0), 14);
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 2, Y : 0 });
+
+    var map4 = new Map([
+                       [0,0,0,0],
+                       [0,0,0,0],
+                       [0,0,0,0],
+                       [1,0,0,0]
+                       ]);
+
+    rayDestination = map4.CastRay(-Math.PI/4, Pose(2,2,0), 14);
+    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
+    assert.deepEqual(rayDestinationFloored, { X : 0, Y : 3 });
+
+    // check out of range
+    
+    var map5 = new Map([
+                       [0,0,0,0,0,0,0,0,0,1],
+                       [0,0,0,0,0,0,0,0,0,0]
+                       ]);
+
+    rayDestination = map5.CastRay(Math.PI/2, Pose(0,0,0), 8);
+    assert.deepEqual(rayDestination, { X : Infinity, Y : Infinity, Distance: Infinity});
+
+});

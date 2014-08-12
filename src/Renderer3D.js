@@ -71,35 +71,11 @@ Renderer3D.prototype._DrawWallColumns = function() {
         var angle = Math.atan2(focalWidth, this._focalLength);
 
         var globalAngle = angle + this._playerPose.Angle;
-        var rayTerminationCoords = this._CastRay(globalAngle);
+        var rayTerminationCoords = this.map.CastRay(globalAngle, this._playerPose, this._drawDistance);
 
     }
 };
 
-Renderer3D.prototype._CastRay = function(angle, stepLength) {
-    stepLength = stepLength || 0.1;
-    var stepX = Math.sin(angle);
-    var stepY = Math.cos(angle);
-
-    //floating point weirdness
-    stepX = stepX.toDecPlaces(6);
-    stepY = stepY.toDecPlaces(6);
-
-    for (var step = 0; step < this._drawDistance; step += stepLength) {
-        var x = this._playerPose.X + step * stepX;
-        var y = this._playerPose.Y + step * stepY;
-
-        if (this._map.HasWallAt(x,y)) {
-            
-            var intersection = this._map.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
-            var distance     = this._map.GetDistance(this._playerPose.X, this._playerPose.Y, 
-                                                     intersection.X, intersection.Y);
-            
-            return { X : x, Y: y, Distance: distance };
-        }
-    }
-    return { X : Infinity, Y : Infinity, Distance: Infinity};
-};
 
 Renderer3D.prototype._DrawColumn = function(column, rayTerminationCoords, angle) {
 

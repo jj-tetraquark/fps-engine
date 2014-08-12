@@ -41,6 +41,30 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
+Map.prototype.CastRay = function(angle, origin, range, stepLength) {
+    stepLength = stepLength || 0.1;
+    var stepX = Math.sin(angle);
+    var stepY = Math.cos(angle);
+
+    //floating point weirdness
+    stepX = stepX.toDecPlaces(6);
+    stepY = stepY.toDecPlaces(6);
+
+    for (var step = 0; step < range; step += stepLength) {
+        var x = origin.X + step * stepX;
+        var y = origin.Y + step * stepY;
+
+        if (this.HasWallAt(x,y)) {
+            
+            var intersection = this.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
+            var distance     = this.GetDistance(origin.X, origin.Y, intersection.X, intersection.Y);
+            
+            return { X : x, Y: y, Distance: distance };
+        }
+    }
+    return { X : Infinity, Y : Infinity, Distance: Infinity};
+};
+
 // TODO make this more efficient and refactor
 Map.prototype.GetWallIntersectionPoint = function(x1, y1, x2, y2) {
     var dx = x2 - x1;
