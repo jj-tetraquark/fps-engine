@@ -15,6 +15,7 @@ function Map(lengthOrJson, height) {
         this.AssignFromJson(lengthOrJson);
     }
     
+    this._rayCaster = new GridMapRayCaster(this);
 }
 
 Map.prototype.AssignFromJson = function(json) {
@@ -42,28 +43,8 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
-Map.prototype.CastRay = function(angle, origin, range, stepLength) {
-    stepLength = stepLength || 0.1;
-    var stepX = Math.sin(angle);
-    var stepY = Math.cos(angle);
-
-    //floating point weirdness
-    stepX = stepX.toDecPlaces(6);
-    stepY = stepY.toDecPlaces(6);
-
-    for (var step = 0; step < range; step += stepLength) {
-        var x = origin.X + step * stepX;
-        var y = origin.Y + step * stepY;
-
-        if (this.HasWallAt(x,y)) {
-            
-            var intersection = this.GetWallIntersectionPoint(x - stepX, y - stepY, x, y);
-            var distance     = this.GetDistance(origin.X, origin.Y, intersection.X, intersection.Y);
-            
-            return { X : x, Y: y, Distance: distance };
-        }
-    }
-    return { X : Infinity, Y : Infinity, Distance: Infinity};
+Map.prototype.CastRay = function(angle, origin, range) {
+    this._rayCaster.Cast(angle, origin, range);
 };
 
 // TODO make this more efficient and refactor
@@ -175,15 +156,27 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     var rayDistance2 = 0;
     var nextIntersection = this.GetNextGridLineIntersection(this._origin);
 
-    while (rayDistance2 <= this._range2) {
+    var x = 0;
+    do {
         if (this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
-            return { distance : Math.sqrt(rayDistance2) }; // Returning an object for now as I may need more stuff later
+            return { 
+                X : nextIntersection.X,
+                Y : nextIntersection.Y,
+                distance : Math.sqrt(rayDistance2) 
+            }; 
         }
 
         nextIntersection = this.GetNextGridLineIntersection(nextIntersection);
         rayDistance2 += nextIntersection.distance2;
-    }
-    return { distance : Infinity };
+
+        x++;
+    } while (rayDistance2 <= this._range2 && x < 2000);
+
+    return { 
+        X : Infinity,
+        Y : Infinity, 
+        distance : Infinity 
+    };
 };
 
 GridMapRayCaster.prototype.GetNextGridLineIntersection = function(localOrigin) {
