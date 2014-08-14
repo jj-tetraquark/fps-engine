@@ -14,6 +14,7 @@ function Map(lengthOrJson, height) {
     } else {
         this.AssignFromJson(lengthOrJson);
     }
+    
 }
 
 Map.prototype.AssignFromJson = function(json) {
@@ -146,4 +147,81 @@ Map.prototype._Assign= function(x, y, value) {
 
 Map.prototype._CoordsOutOfRange = function(x, y) {
     return (x > this._wallGridWidth - 1 || x < 0 || y > this._wallGridHeight - 1 || y < 0);
+};
+
+
+// Should probably split this bit out, however it is a raycaster that will only work with 
+// the map class above. If you write a new map, you'll need a raycaster to fit it.
+function GridMapRayCaster(map) {
+    this._angle = 0;
+    this._origin = {};
+    this._range2 = 0; // squared
+    this._map = map;
+    this._dx = 0;
+    this._dy = 0;
+    this._gradient = 0;
+    this.y_intercept = 0;
+}
+
+GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
+    this._angle = angle;
+    this._origin = origin;
+    this._range2 = Math.pow(range, 2);
+    
+    this._dx = Math.sin(angle);
+    this._dy = Math.cos(angle);
+    this._gradient = this._dy/this._dx;
+    
+    var rayDistance2 = 0;
+    var nextIntersection = this.GetNextGridLineIntersection(this._origin);
+
+    while (rayDistance2 <= this._range2) {
+        if (this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
+            return { distance : Math.sqrt(rayDistance2) }; // Returning an object for now as I may need more stuff later
+        }
+
+        nextIntersection = this.GetNextGridLineIntersection(nextIntersection);
+        rayDistance2 += nextIntersection.distance2;
+    }
+    return { distance : Infinity };
+};
+
+GridMapRayCaster.prototype.GetNextGridLineIntersection = function(localOrigin) {
+    var nextXIntersection = this.GetNextXIntersection(localOrigin);
+    var nextYIntersection = this.GetNextYIntersection(localOrigin);
+    return (nextXIntersection.distance2 < nextYIntersection.distance2) ? nextXIntersection : nextYIntersection;  
+};
+
+GridMapRayCaster.prototype.GetNextXIntersection = function(localOrigin) {
+    if (this._dx === 0) {
+        return { X : localOrigin.X, Y : Infinity, distance2 : Infinity };
+    }
+    var nextXVertex = (this._dx > 0) ? Math.ceil(localOrigin.X) : Math.floor(localOrigin.X);
+    
+    var changeInX = nextXVertex - localOrigin.X;
+    var changeInY = changeInX * this._gradient;
+    
+    var distance2 = Math.pow(changeInX, 2) + Math.pow(changeInY, 2);
+    return { 
+        X : nextXVertex,
+        Y : localOrigin.Y + changeInY,
+        distance2 : distance2
+    };
+};
+
+GridMapRayCaster.prototype.GetNextYIntersection = function(localOrigin) {
+    if (this._dy === 0) {
+        return { X : Infinity, Y : localOrigin.Y, distance2 : Infinity };
+    }
+    var nextYVertex = (this._dy > 0) ? Math.ceil(localOrigin.X) : Math.floor(localOrigin.X);
+    
+    var changeInY = nextYVertex - localOrigin.Y;
+    var changeInX = changeInY / this._gradient;
+    
+    var distance2 = Math.pow(changeInX, 2) + Math.pow(changeInY, 2);
+    return { 
+        X : localOrigin.X + changeInX,
+        Y : changeInY,
+        distance2 : distance2
+    };
 };
