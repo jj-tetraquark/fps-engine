@@ -213,7 +213,7 @@ GridMapRayCaster.prototype.GetNextYIntersection = function(localOrigin) {
     if (this._dy === 0) {
         return { X : Infinity, Y : localOrigin.Y, distance2 : Infinity };
     }
-    var nextYVertex = (this._dy > 0) ? Math.ceil(localOrigin.X) : Math.floor(localOrigin.X);
+    var nextYVertex = (this._dy > 0) ? Math.ceil(localOrigin.Y) : Math.floor(localOrigin.Y);
     
     var changeInY = nextYVertex - localOrigin.Y;
     var changeInX = changeInY / this._gradient;
