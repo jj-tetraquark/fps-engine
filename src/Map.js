@@ -80,29 +80,28 @@ Map.prototype._CoordsOutOfRange = function(x, y) {
 // Should probably split this bit out, however it is a raycaster that will only work with
 // the map class above. If you write a new map, you'll need a raycaster to fit it.
 function GridMapRayCaster(map) {
-    this._angle = 0;
-    this._origin = {};
-    this._range2 = 0; // squared
     this._map = map;
     this._dx = 0;
     this._dy = 0;
     this._gradient = 0;
-    this.y_intercept = 0;
+
+    this._pointInfinity = {
+        X : Infinity,
+        Y : Infinity,
+        Distance : Infinity
+    };
 }
 
 GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
-    this._angle = angle;
-    this._origin = origin;
-    this._range2 = Math.pow(range, 2);
 
     this._dx = Math.sin(angle);
     this._dy = Math.cos(angle);
     this._gradient = (this._dy/this._dx).toDecPlaces(6);
+    var range2 = Math.pow(range, 2);
 
     var rayDistance2 = 0;
-    var nextIntersection = this.GetNextGridLineIntersection(this._origin);
+    var nextIntersection = this.GetNextGridLineIntersection(origin);
 
-    var x = 0;
     do {
         if (this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
             return {
@@ -113,16 +112,11 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
         }
 
         nextIntersection = this.GetNextGridLineIntersection(nextIntersection);
-        rayDistance2 = Math.pow(nextIntersection.X - this._origin.X, 2) + Math.pow(nextIntersection.Y - this._origin.Y, 2);
+        rayDistance2 = Math.pow(nextIntersection.X - origin.X, 2) + Math.pow(nextIntersection.Y - origin.Y, 2);
 
-        x++;
-    } while (rayDistance2 <= this._range2 && x < 2000);
+    } while (rayDistance2 <= range2);
 
-    return {
-        X : Infinity,
-        Y : Infinity,
-        Distance : Infinity
-    };
+    return this._pointInfinity;
 };
 
 GridMapRayCaster.prototype.GetNextGridLineIntersection = function(localOrigin) {
