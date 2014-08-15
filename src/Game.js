@@ -7,7 +7,7 @@ function Game(element) {
     window.DBG = new DebugConsole();
 
     var size = 20;
-    this.inputManager = new InputManager(); 
+    this.inputManager = new InputManager();
     this.map = new Map(size);
     this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
     this.player.SetSensitivity(2);
@@ -24,11 +24,11 @@ Game.prototype.startLoop = function() {
     var self = this;
     if (requestAnimationFrame) {
         onEachFrame = function() {
-            var loop = function(time) { 
+            var loop = function(time) {
                 var seconds = (time - this.lastTime) / 1000;
                 this.lastTime = time;
-                self.Loop(seconds); 
-                requestAnimationFrame(loop); 
+                self.Loop(seconds);
+                requestAnimationFrame(loop);
             };
             loop();
         };
@@ -42,7 +42,7 @@ Game.prototype.startLoop = function() {
 };
 
 Game.prototype.Loop = function(frameTime) {
-    var input = this.inputManager.GetInput(); 
+    var input = this.inputManager.GetInput();
     this.player.HandleInput(input, frameTime);
     var playerPose = this.player.GetPose();
 
@@ -52,6 +52,3 @@ Game.prototype.Loop = function(frameTime) {
     window.DBG.Log("Details", { "FPS" : (1/frameTime).toFixed(2) });
     window.DBG.Log("Player pose", Pose(playerPose.X, playerPose.Y, playerPose.Angle/Math.PI));
 };
-
-
-

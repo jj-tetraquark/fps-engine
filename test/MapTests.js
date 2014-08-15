@@ -41,7 +41,7 @@ QUnit.test("Test map randomiser", function(assert) {
 
     testMap.Randomize();
     assert.notDeepEqual(testMap._wallGrid, initialWallGrid);
-    
+
 });
 
 QUnit.test("Test GetIntersectionPoint", function(assert) {
@@ -50,7 +50,7 @@ QUnit.test("Test GetIntersectionPoint", function(assert) {
                           [0,1,0],
                           [0,0,0]
                           ]);
-    
+
     var intersect = testMap.GetWallIntersectionPoint(0.5, 1.5, 1.2, 1.5);  // simple translation across x axis
     assert.deepEqual(intersect, { X : 1, Y : 1.5 });
 });
@@ -64,7 +64,7 @@ QUnit.test("Test ray casting", function(assert) {
                       [0,0,0,0,0],
                       [0,0,0,1,0],
                       ]);
-   
+
     var rayDestination =  map.CastRay(Math.PI/4, Pose(1,2,0), 14);
     var rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
     assert.deepEqual(rayDestinationFloored, { X : 3, Y : 4 });
@@ -100,12 +100,12 @@ QUnit.test("Test ray casting", function(assert) {
                        [1,0,0,0]
                        ]);
 
-    rayDestination = map4.CastRay(-Math.PI/4, Pose(2,2,0), 14);
+    rayDestination = map4.CastRay(-Math.PI/4, Pose(2,1,0), 14);
     rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
     assert.deepEqual(rayDestinationFloored, { X : 0, Y : 3 });
 
     // check out of range
-    
+
     var map5 = new Map([
                        [0,0,0,0,0,0,0,0,0,1],
                        [0,0,0,0,0,0,0,0,0,0]
