@@ -44,17 +44,6 @@ QUnit.test("Test map randomiser", function(assert) {
 
 });
 
-QUnit.test("Test GetIntersectionPoint", function(assert) {
-    var testMap = new Map([
-                          [0,0,0],
-                          [0,1,0],
-                          [0,0,0]
-                          ]);
-
-    var intersect = testMap.GetWallIntersectionPoint(0.5, 1.5, 1.2, 1.5);  // simple translation across x axis
-    assert.deepEqual(intersect, { X : 1, Y : 1.5 });
-});
-
 QUnit.test("Test ray casting", function(assert) {
 
     var map = new Map([
@@ -113,5 +102,14 @@ QUnit.test("Test ray casting", function(assert) {
 
     rayDestination = map5.CastRay(Math.PI/2, Pose(0,0,0), 8);
     assert.deepEqual(rayDestination, { X : Infinity, Y : Infinity, Distance: Infinity});
+
+    var map6 = new Map([
+                       [0,0,0,0,0],
+                       [1,0,0,0,0],
+                       [0,0,0,0,0]
+                       ]);
+
+    rayDestination = map6.CastRay(-Math.PI/2, Pose(4, 1.5, 0), 8);
+    assert.deepEqual(rayDestination, { X : 0, Y: 1.5, Distance: 4 }, "Need to make sure you deal with non integer intersections");
 
 });
