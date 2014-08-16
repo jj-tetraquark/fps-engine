@@ -20,7 +20,7 @@ function Game(element, minimap) {
     if (minimap) {
         this.minimap = new Renderer2D(minimap);
         this.minimap.SetMap(this.map);
-        this.renderer.SetPlayerPose(this.player.GetPose());
+        this.minimap.SetPlayerPose(this.player.GetPose());
     }
 
     this.startLoop();

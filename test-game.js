@@ -4,5 +4,6 @@
 var game = new Game('game', 'minimap');
 game.map.Randomize();
 game.renderer.FullRedraw();
+game.minimap.FullRedraw();
 
 

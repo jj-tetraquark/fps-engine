@@ -50,10 +50,13 @@ Renderer2D.prototype.Draw = function() {
     this._ctx.save();
 
     var playerPose = this._GetVisualPlayerPose();
+    assert((playerPose.X !== -1 && playerPose.Y !== -1), "Player pose has not been set!");
 
     this._ctx.translate(playerPose.X, playerPose.Y);
     this._ctx.rotate(-playerPose.Angle); // -ve because we're rotating the whole canvas, remember?
-    this._ctx.drawImage(this._preRenderedPlayer, -10, -10, 20, 20);
+
+    var cellSize = this._wallCellVisualSize;
+    this._ctx.drawImage(this._preRenderedPlayer, -cellSize/2, -cellSize/2, cellSize, cellSize);
     this._ctx.restore();
 };
 
