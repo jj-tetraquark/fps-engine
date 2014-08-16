@@ -6,10 +6,20 @@
 function Game(element, minimap) {
     window.DBG = new DebugConsole();
 
-    var size = 20;
     this.inputManager = new InputManager();
-    this.map = new Map(size);
-    this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
+    this.map = new Map([
+                       [0,0,0,0,0,0,0,0,0,0],
+                       [0,0,0,0,0,0,0,0,0,0],
+                       [0,0,1,1,0,0,1,1,0,0],
+                       [0,0,1,1,0,0,1,1,0,0],
+                       [0,0,0,0,0,0,1,1,0,0],
+                       [0,0,0,0,0,0,1,1,0,0],
+                       [0,0,1,1,0,0,1,1,0,0],
+                       [0,0,1,1,0,0,1,1,0,0],
+                       [0,0,0,0,0,0,0,0,0,0],
+                       [0,0,0,0,0,0,0,0,0,0]
+                       ]);
+    this.player = new Player().WithPose(this.map.GetWallGridWidth()/2, this.map.GetWallGridHeight()/2, 0).OnMap(this.map);
     this.player.SetSensitivity(2);
 
     this.renderer = new Renderer3D(element);

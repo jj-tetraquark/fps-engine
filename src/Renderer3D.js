@@ -115,9 +115,9 @@ Renderer3D.prototype._DrawWallColumn = function(column, ray, angle) {
     this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._width, projectedWallColumn.height);
 
     // overlay shadow
-    this._ctx.fillStyle = '#000000';
-    this._ctx.globalAlpha = Math.max((ray.Distance + ray.Shadow) / this._fogDistance - this._ambientLight, 0);
-    this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._width, projectedWallColumn.height);
+    // this._ctx.fillStyle = '#000000';
+    // this._ctx.globalAlpha = Math.max((ray.Distance + ray.Shadow) / this._fogDistance - this._ambientLight, 0);
+    // this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._width, projectedWallColumn.height);
 
 };
 
