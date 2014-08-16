@@ -3,7 +3,7 @@
  * Much of the code here is just for testing
  */
 
-function Game(element) {
+function Game(element, minimap) {
     window.DBG = new DebugConsole();
 
     var size = 20;
@@ -15,6 +15,13 @@ function Game(element) {
     this.renderer = new Renderer3D(element);
     this.renderer.SetMap(this.map);
     this.renderer.SetPlayerPose(this.player.GetPose());
+
+    // TODO: Tidy all this up
+    if (minimap) {
+        this.minimap = new Renderer2D(minimap);
+        this.minimap.SetMap(this.map);
+        this.renderer.SetPlayerPose(this.player.GetPose());
+    }
 
     this.startLoop();
 }
@@ -47,6 +54,9 @@ Game.prototype.Loop = function(frameTime) {
     var playerPose = this.player.GetPose();
 
     this.renderer.Draw();
+    if (this.minimap) {
+        this.minimap.Draw();
+    }
 
     window.DBG.Log("User Input", input);
     window.DBG.Log("Details", { "FPS" : (1/frameTime).toFixed(2) });
