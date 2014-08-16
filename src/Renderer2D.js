@@ -17,12 +17,12 @@ function Renderer2D(canvasElementId) {
     this._preRenderedWallGrid = document.createElement('canvas');
     this._preRenderedPlayer   = document.createElement('canvas');
 
-    this._playerPose           = Pose(-1,-1,0);
+    this._playerPose           = new Pose(-1,-1,0);
     this._map                  = null;
     this._wallCellVisualSize   = 0; // TODO consider renaming this to something like "gridMultiplier" or "gridToScreenRatio"
     this._wallGridVisualWidth  = 0;
     this._wallGridVisualHeight = 0;
-    
+
     // Fix the drawable area dimensions
     this._screen.height = this._screenHeight;
     this._screen.width  = this._screenWidth;
@@ -38,7 +38,7 @@ Renderer2D.prototype.SetPlayerPose = function(pose) {
 
 Renderer2D.prototype.SetMap = function(map) {
     this._map = map;
-    
+
     this._CalculateWallGridVisualDimensions();
     this._PreRenderWallGrid();
 };
@@ -52,7 +52,7 @@ Renderer2D.prototype.Draw = function() {
     var playerPose = this._GetVisualPlayerPose();
 
     this._ctx.translate(playerPose.X, playerPose.Y);
-    this._ctx.rotate(-playerPose.Angle); // -ve because we're rotating the whole canvas, remember? 
+    this._ctx.rotate(-playerPose.Angle); // -ve because we're rotating the whole canvas, remember?
     this._ctx.drawImage(this._preRenderedPlayer, -10, -10, 20, 20);
     this._ctx.restore();
 };
@@ -68,7 +68,7 @@ Renderer2D.prototype._PreRenderWallGrid = function() {
     this._preRenderedWallGrid.width = this._wallGridVisualWidth;
     this._preRenderedWallGrid.height = this._wallGridVisualHeight;
     var ctx = this._preRenderedWallGrid.getContext('2d');
-    
+
     this._DrawGrid(ctx);
     this._DrawWalls(ctx);
 };
@@ -92,7 +92,7 @@ Renderer2D.prototype._PreRenderPlayerAvatar = function() {
 
 Renderer2D.prototype._CalculateWallGridVisualDimensions = function() {
 
-    // The wall grid is an int x int grid. 
+    // The wall grid is an int x int grid.
     var numberOfWallGridColumns = this._map.GetWallGridWidth();
     var numberOfWallGridRows    = this._map.GetWallGridHeight();
 
@@ -100,7 +100,7 @@ Renderer2D.prototype._CalculateWallGridVisualDimensions = function() {
     var maxCellHeight = this._screenHeight / numberOfWallGridRows;
 
     this._wallCellVisualSize = (maxCellWidth < maxCellHeight) ? maxCellWidth : maxCellHeight;
-    
+
     this._wallGridVisualWidth = this._wallCellVisualSize * numberOfWallGridRows;
     this._wallGridVisualHeight = this._wallCellVisualSize * numberOfWallGridRows;
 };
@@ -134,10 +134,10 @@ Renderer2D.prototype._DrawWalls = function(ctx) {
 
 Renderer2D.prototype._GetVisualPlayerPose = function() {
     var r = this;
-    return { 
+    return {
         X     : r._playerPose.X * this._wallCellVisualSize,
         Y     : r._playerPose.Y * this._wallCellVisualSize,
         Angle : r._playerPose.Angle + Math.PI // We add a half circle because zero angle
-    };                                        // is stright down rather than up 
+    };                                        // is stright down rather than up
 };
 

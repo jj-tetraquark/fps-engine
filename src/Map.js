@@ -107,7 +107,8 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
-                Distance : Math.sqrt(rayDistance2)
+                Distance : Math.sqrt(rayDistance2),
+                Shadow : nextIntersection.shadow
             };
         }
 
@@ -125,6 +126,8 @@ GridMapRayCaster.prototype.GetNextGridLineIntersection = function(localOrigin) {
     return (nextXIntersection.distance2 < nextYIntersection.distance2) ? nextXIntersection : nextYIntersection;
 };
 
+// Yes, GetNextXIntersection and GetNextYIntersection could probably be refactored in to calling a single
+// function with parameters, but for now this looks more maintainable.
 GridMapRayCaster.prototype.GetNextXIntersection = function(localOrigin) {
     if (this._dx === 0) {
         return { X : localOrigin.X, Y : Infinity, distance2 : Infinity };
@@ -135,10 +138,12 @@ GridMapRayCaster.prototype.GetNextXIntersection = function(localOrigin) {
     var changeInY = changeInX * this._gradient;
 
     var distance2 = Math.pow(changeInX, 2) + Math.pow(changeInY, 2);
+
     return {
         X : nextXVertex,
         Y : localOrigin.Y + changeInY,
-        distance2 : distance2
+        distance2 : distance2,
+        shadow: this._dy < 0 ? 2 : 1
     };
 };
 
@@ -155,6 +160,7 @@ GridMapRayCaster.prototype.GetNextYIntersection = function(localOrigin) {
     return {
         X : localOrigin.X + changeInX,
         Y : nextYVertex,
-        distance2 : distance2
+        distance2 : distance2,
+        shadow: this._dx < 0 ? 2 : 0
     };
 };

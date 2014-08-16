@@ -110,6 +110,6 @@ QUnit.test("Test ray casting", function(assert) {
                        ]);
 
     rayDestination = map6.CastRay(-Math.PI/2, Pose(4, 1.5, 0), 8);
-    assert.deepEqual(rayDestination, { X : 0, Y: 1.5, Distance: 4 }, "Need to make sure you deal with non integer intersections");
+    assert.deepEqual(rayDestination, { X : 0, Y : 1.5, Distance : 4, Shadow : 1 }, "Need to make sure you deal with non integer intersections");
 
 });

@@ -8,7 +8,8 @@ module.exports = function(grunt) {
 
         concat: {
             options : {
-                //banner: "'use strict';\n"
+                // banner: "(function() {\n'use strict';\n",
+                // footer: "})();"
             },
             build: {
                 src: ['src/*.js'],
@@ -34,6 +35,7 @@ module.exports = function(grunt) {
                 curly: true,
                 undef: true,
                 esnext: true,
+                // strict: true,
                 globals: {
                     webkitRequestAnimationFrame: true,
                     mozRequestAnimationFrame : true,
@@ -60,16 +62,16 @@ module.exports = function(grunt) {
                         InputManager : true,
                         loadJSON : true,
                         Renderer2D : true,
-                        Renderer3D : true 
+                        Renderer3D : true
                     }
                 },
                 files : {
-                    test: ['test/*.js'] 
+                    test: ['test/*.js']
                 },
             }
         },
 
-        qunit : { 
+        qunit : {
             all : ['test/*.html'],
             server_tests : {
                 options : {

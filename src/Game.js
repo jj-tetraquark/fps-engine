@@ -12,7 +12,7 @@ function Game(element) {
     this.player = new Player().WithPose(size/2,size/2,0).OnMap(this.map);
     this.player.SetSensitivity(2);
 
-    this.renderer = new Renderer2D(element);
+    this.renderer = new Renderer3D(element);
     this.renderer.SetMap(this.map);
     this.renderer.SetPlayerPose(this.player.GetPose());
 
@@ -50,5 +50,5 @@ Game.prototype.Loop = function(frameTime) {
 
     window.DBG.Log("User Input", input);
     window.DBG.Log("Details", { "FPS" : (1/frameTime).toFixed(2) });
-    window.DBG.Log("Player pose", Pose(playerPose.X, playerPose.Y, playerPose.Angle/Math.PI));
+    window.DBG.Log("Player pose", new Pose(playerPose.X, playerPose.Y, playerPose.Angle/Math.PI));
 };

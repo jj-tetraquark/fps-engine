@@ -7,7 +7,7 @@ const FULL_CIRCLE = 2*Math.PI;
 
 
 function Player() {
-    this._pose        = Pose(0, 0, 0);
+    this._pose        = new Pose(0, 0, 0);
     this._speed       = 1;
     this._sensitivity = 1;
 
@@ -22,7 +22,7 @@ Player.prototype.WithSpeed = function(speed)  {
 };
 
 Player.prototype.WithPose = function(x, y, angle) {
-    this._pose = Pose(x, y, angle);
+    this._pose = new Pose(x, y, angle);
     return this;
 };
 
@@ -49,7 +49,7 @@ Player.prototype.HandleInput = function(input, frameTime) {
 };
 
 Player.prototype.SetSensitivity = function(newSensitivity) {
-   this._sensitivity = newSensitivity; 
+   this._sensitivity = newSensitivity;
 };
 
 Player.prototype.GetPose = function() {
@@ -61,10 +61,10 @@ Player.prototype.GetPose = function() {
 Player.prototype._Walk = function(direction, frameTime) {
     var dx = direction * Math.sin(this._pose.Angle) * this._speed * frameTime;
     var dy = direction * Math.cos(this._pose.Angle) * this._speed * frameTime;
-    
+
     var newX = (this._pose.X + dx).toDecPlaces(2);
     var newY = (this._pose.Y + dy).toDecPlaces(2);
-    
+
     this._Translate(newX, newY);
 };
 
@@ -74,7 +74,7 @@ Player.prototype._Strafe = function(direction, frameTime) {
 
     var newX = (this._pose.X + dx).toDecPlaces(2);
     var newY = (this._pose.Y + dy).toDecPlaces(2);
-    
+
     this._Translate(newX, newY);
 };
 
