@@ -73,7 +73,7 @@ Map.prototype._Assign= function(x, y, value) {
 };
 
 Map.prototype._CoordsOutOfRange = function(x, y) {
-    return (x > this._wallGridWidth - 1 || x < 0 || y > this._wallGridHeight - 1 || y < 0);
+    return (x >= this._wallGridWidth || x <= 0 || y >= this._wallGridHeight || y <= 0);
 };
 
 
@@ -103,7 +103,16 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     var nextIntersection = this.GetNextGridLineIntersection(origin);
 
     do {
-        if (this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
+        var adjustedX = nextIntersection.X;
+        var adjustedY = nextIntersection.Y;
+        if (this._dx < 0) {
+            adjustedX += 1;
+        }
+        if (this._dy < 0) {
+            adjustedY += 1;
+        }
+
+        if (this._map.HasWallAt(adjustedX, adjustedY)) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,

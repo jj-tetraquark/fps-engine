@@ -23,16 +23,18 @@ QUnit.test("Test construction of Map object", function(assert) {
 QUnit.test("Test map grid accessor", function(assert) {
     var testMap = new Map([
                             [0,0,0],
-                            [0,1,0],
+                            [0,0,0],
                             [0,1,0]
                             ]);
-    assert.ok(!testMap.HasWallAt(0,0), "Expect not to find a wall");
-    assert.ok(testMap.HasWallAt(1,1), "Expect to find a wall");
+    assert.ok(!testMap.HasWallAt(1,1), "Expect not to find a wall");
+    assert.ok(testMap.HasWallAt(1,2), "Expect to find a wall");
 
     assert.ok(testMap.HasWallAt(-1,-1, "Outside map should be considered wall"));
-    assert.ok(testMap.HasWallAt(3,3, "Outside map should be considered wall"));
+    assert.ok(testMap.HasWallAt(3,3), "Outside map should be considered wall");
+    assert.ok(testMap.HasWallAt(2,0), "Edge of map needs to be treated as a wall");
+    assert.ok(testMap.HasWallAt(0,0), "Edge of map needs to be treated as a wall");
 
-    assert.ok(testMap.HasWallAt(1.2, 1.9), "Expect to find a wall with non-integer numbers");
+    assert.ok(testMap.HasWallAt(1.2, 1.9), "Expect to find a wall with non-integer coords");
 });
 
 QUnit.test("Test map randomiser", function(assert) {

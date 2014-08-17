@@ -19,8 +19,7 @@ function Renderer3D(canvasElementId) {
     this._fogDistance   = 8;
     this._ambientLight  = 0;
 
-    this._width          = this._screenWidth;
-    this._spacing        = this._width / this._resolution;
+    this._spacing        = this._screenWidth / this._resolution;
     this._columnWidth    = Math.ceil(this._spacing);
 
 
@@ -112,12 +111,12 @@ Renderer3D.prototype._DrawWallColumn = function(column, ray, angle) {
     this._ctx.beginPath();
     this._ctx.globalAlpha = 1;
     this._ctx.fillStyle = '#CCCCCC'; // grey walls for now
-    this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._width, projectedWallColumn.height);
+    this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._columnWidth, projectedWallColumn.height);
 
     // overlay shadow
-    // this._ctx.fillStyle = '#000000';
-    // this._ctx.globalAlpha = Math.max((ray.Distance + ray.Shadow) / this._fogDistance - this._ambientLight, 0);
-    // this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._width, projectedWallColumn.height);
+    this._ctx.fillStyle = '#000000';
+    this._ctx.globalAlpha = Math.max((ray.Distance + ray.Shadow) / this._fogDistance - this._ambientLight, 0);
+    this._ctx.fillRect(leftOffset, projectedWallColumn.top, this._columnWidth, projectedWallColumn.height);
 
 };
 
