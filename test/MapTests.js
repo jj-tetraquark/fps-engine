@@ -34,7 +34,7 @@ QUnit.test("Test map grid accessor", function(assert) {
     assert.ok(testMap.HasWallAt(2,0), "Edge of map needs to be treated as a wall");
     assert.ok(testMap.HasWallAt(0,0), "Edge of map needs to be treated as a wall");
 
-    assert.ok(testMap.HasWallAt(1.2, 1.9), "Expect to find a wall with non-integer coords");
+    assert.ok(testMap.HasWallAt(1.2, 2.9), "Expect to find a wall with non-integer coords");
 });
 
 QUnit.test("Test map randomiser", function(assert) {
@@ -102,7 +102,7 @@ QUnit.test("Test ray casting", function(assert) {
                        [0,0,0,0,0,0,0,0,0,0]
                        ]);
 
-    rayDestination = map5.CastRay(Math.PI/2, Pose(0,0,0), 8);
+    rayDestination = map5.CastRay(Math.PI/2, Pose(0.1,0.1,0), 8);
     assert.deepEqual(rayDestination, { X : Infinity, Y : Infinity, Distance: Infinity});
 
     var map6 = new Map([

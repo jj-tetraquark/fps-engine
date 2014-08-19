@@ -105,13 +105,6 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     do {
         var adjustedX = nextIntersection.X;
         var adjustedY = nextIntersection.Y;
-        if (this._dx < 0) {
-            adjustedX += 1;
-        }
-        if (this._dy < 0) {
-            adjustedY += 1;
-        }
-
         if (this._map.HasWallAt(adjustedX, adjustedY)) {
             return {
                 X : nextIntersection.X,
