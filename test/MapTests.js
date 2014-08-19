@@ -80,7 +80,7 @@ QUnit.test("Test ray casting", function(assert) {
                        [0,0,0,0]
                        ]);
 
-    ray = map3.CastRay(Math.PI, Pose(2,3,0), 14);
+    var ray = map3.CastRay(Math.PI, Pose(2,3,0), 14);
     rayDestination = { X : ray.X, Y : ray.Y, Distance: ray.Distance };
     assert.deepEqual(rayDestination, { X : 2, Y : 1, Distance: 2 }, "Ray should terminate on the south-facing wall");
 
