@@ -46,6 +46,24 @@ QUnit.test("Test map randomiser", function(assert) {
 
 });
 
+QUnit.test("Test WallAtVertex", function(assert) {
+
+    var testMap = new Map([
+                          [0,0,0],
+                          [0,1,0],
+                          [0,0,0]
+                          ]);
+
+    assert.throws(function() { testMap.HasWallAtVertex(0.5, 0.5); },
+        "Two non-integer coords, should have thrown an exception");
+
+    assert.ok(!testMap.HasWallAtVertex(0, 0), "Should not have found wall");
+    assert.ok(testMap.HasWallAtVertex(1, 1.5), "Should have found western wall");
+    assert.ok(testMap.HasWallAtVertex(1.5, 1), "Should have found northern wall");
+    assert.ok(testMap.HasWallAtVertex(2, 1.5), "Should have found eastern wall");
+    assert.ok(testMap.HasWallAtVertex(1.5, 2), "Should have found southern wall");
+});
+
 QUnit.test("Test ray casting", function(assert) {
 
     var map = new Map([
@@ -68,9 +86,9 @@ QUnit.test("Test ray casting", function(assert) {
                        [0,0,0,0]
                        ]);
 
-    rayDestination = map2.CastRay(-2.16, Pose(3,2,0), 14);
-    rayDestinationFloored = { X : Math.floor(rayDestination.X), Y : Math.floor(rayDestination.Y) };
-    assert.deepEqual(rayDestinationFloored, { X : 0, Y : 0 });
+    var ray2 = map2.CastRay(-2.16, Pose(3,2,0), 14);
+    rayDestination = { X : ray2.X, Y : Math.floor(ray2.Y) };
+    assert.deepEqual(rayDestination, { X : 1, Y : 0 }, "Ray should terminate somewhere on the east-facing wall");
 
     // and again
     var map3 = new Map([
@@ -80,9 +98,9 @@ QUnit.test("Test ray casting", function(assert) {
                        [0,0,0,0]
                        ]);
 
-    var ray = map3.CastRay(Math.PI, Pose(2,3,0), 14);
-    rayDestination = { X : ray.X, Y : ray.Y, Distance: ray.Distance };
-    assert.deepEqual(rayDestination, { X : 2, Y : 1, Distance: 2 }, "Ray should terminate on the south-facing wall");
+    var ray3 = map3.CastRay(Math.PI, Pose(2.2,3,0), 14);
+    rayDestination = { X : ray3.X, Y : ray3.Y, Distance: ray3.Distance };
+    assert.deepEqual(rayDestination, { X : 2.2, Y : 1, Distance: 2 }, "Ray should terminate on the south-facing wall");
 
     var map4 = new Map([
                        [0,0,0,0],
@@ -112,6 +130,6 @@ QUnit.test("Test ray casting", function(assert) {
                        ]);
 
     rayDestination = map6.CastRay(-Math.PI/2, Pose(4, 1.5, 0), 8);
-    assert.deepEqual(rayDestination, { X : 0, Y : 1.5, Distance : 4, Shadow : 1 }, "Need to make sure you deal with non integer intersections");
+    assert.deepEqual(rayDestination, { X : 1, Y : 1.5, Distance : 3, Shadow : 1 }, "Need to make sure you deal with non integer intersections");
 
 });

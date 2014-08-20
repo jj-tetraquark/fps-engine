@@ -43,6 +43,17 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
+Map.prototype.HasWallAtVertex = function(x, y) {
+    assert((x % 1 === 0 || y % 1 === 0), "HasWallAtVertex must be called with at least one integers!");
+
+    if (x % 1 === 0) {
+        return this._ElementAt(x, y) > 0 || this._ElementAt(x - 1, y) > 0;
+    } else if (y % 1 === 0) {
+        return this._ElementAt(x, y) > 0 || this._ElementAt(x, y - 1) > 0;
+    }
+
+};
+
 Map.prototype.CastRay = function(angle, origin, range) {
     return this._rayCaster.Cast(angle, origin, range);
 };
@@ -103,9 +114,7 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     var nextIntersection = this.GetNextGridLineIntersection(origin);
 
     do {
-        var adjustedX = nextIntersection.X;
-        var adjustedY = nextIntersection.Y;
-        if (this._map.HasWallAt(adjustedX, adjustedY)) {
+        if (this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y) || this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
