@@ -110,8 +110,8 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     this._gradient = (this._dy/this._dx).toDecPlaces(6);
     var range2 = Math.pow(range, 2);
 
-    var rayDistance2 = 0;
     var nextIntersection = this.GetNextGridLineIntersection(origin);
+    var rayDistance2 = Math.pow(nextIntersection.X - origin.X, 2) + Math.pow(nextIntersection.Y - origin.Y, 2);
 
     do {
         if (this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y) || this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
