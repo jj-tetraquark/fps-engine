@@ -105,7 +105,7 @@ Renderer3D.prototype._DrawWalls = function() {
 
 Renderer3D.prototype._DrawWallColumn = function(column, ray, angle) {
     "use strict";
-    var leftOffset = Math.floor(column * this._spacing);
+    var leftOffset = this._screenWidth - Math.floor(column * this._spacing);
     var projectedWallColumn = this._ProjectImage(angle, ray.Distance);
 
     this._ctx.beginPath();
