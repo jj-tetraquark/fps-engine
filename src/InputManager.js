@@ -10,9 +10,12 @@ function InputManager() {
     this._rightIsPressed = false;
 
     // binds
-    document.addEventListener('mousemove', this.OnMouseMove.bind(this), false);
     document.addEventListener('keydown'  , this.OnKeyEvent.bind(this)  , false);
     document.addEventListener('keyup'    , this.OnKeyEvent.bind(this)  , false);
+
+    this._OnMouseMoveImpl = this._UnlockedOnMouseMove;
+    document.addEventListener('mousemove', this.OnMouseMove.bind(this), false);
+    document.addEventListener('pointerlockchange', this.OnPointerLockChange.bind(this), false);
 }
 
 InputManager.prototype.GetInput = function() {
@@ -31,11 +34,29 @@ InputManager.prototype.GetInput = function() {
 };
 
 InputManager.prototype.OnMouseMove = function(event) {
+    this._OnMouseMoveImpl(event);
+};
+
+InputManager.prototype._UnlockedOnMouseMove = function(event) {
    this._mouseXMovement = (event.clientX - this._mouseXPosition)/window.innerWidth;
    this._mouseYMovement = (event.clientY - this._mouseYPosition)/window.innerHeight;
 
    this._mouseXPosition = event.clientX;
    this._mouseYPosition = event.clientY;
+};
+
+InputManager.prototype._LockedOnMouseMove = function(event) {
+};
+
+
+InputManager.prototype.OnPointerLockChange = function(event) {
+    if (document.pointerLockElement       !== null ||
+        document.mozPointerLockElement    !== null ||
+        document.webkitPointerLockElement !== null) {
+        this._OnMouseMoveImpl = this._LockedOnMouseMove;
+    } else {
+        this._OnMouseMoveImpl = this._UnlockedOnMouseMove;
+    }
 };
 
 InputManager.prototype.OnKeyEvent = function(event) {

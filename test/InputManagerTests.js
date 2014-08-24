@@ -51,6 +51,13 @@ function GenerateKeyboardEvent(key, upOrDown) {
 
 function GeneratePointerLockEvent() {
     var event = CustomEvent('pointerlockchange', {}); // TODO: Maybe include tests for vendor prefixes
+
+    if(document.pointerLockElement === null || typeof document.pointerLockElement === "undefined") {
+        document.pointerLockElement = document.createElement('canvas');
+    } else {
+        document.pointerLockElement = null;
+    }
+
     document.dispatchEvent(event);
 }
 
