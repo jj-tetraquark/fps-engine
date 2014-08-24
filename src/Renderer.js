@@ -28,7 +28,7 @@ Renderer.prototype.SetPlayerPose = function(pose) {
     return this;
 };
 
-Renderer3D.prototype.SetMap = function(map) {
+Renderer.prototype.SetMap = function(map) {
     "use strict";
     this._map = map;
     return this;
