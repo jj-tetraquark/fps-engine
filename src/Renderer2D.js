@@ -2,45 +2,30 @@
 // It knows it's a grid of cells. There should be some sort of abstraction layer so the
 // format of the map can change but the renderer remains the same.
 
-
 function Renderer2D(canvasElementId) {
-    var element = document.getElementById(canvasElementId);
-    assert(element, "No such element with ID '" + canvasElementId + "'");
-    assert(element.nodeName === "CANVAS", "Element with ID " + canvasElementId + " is not a canvas element");
-
-    this._screen        = element;
-    this._ctx           = element.getContext('2d');
-    this._screenWidth   = this._screen.offsetWidth;
-    this._screenHeight  = this._screen.offsetHeight;
+    Renderer.call(this, canvasElementId);
 
     // We prerender certain elements for great justice
     this._preRenderedWallGrid = document.createElement('canvas');
     this._preRenderedPlayer   = document.createElement('canvas');
 
-    this._playerPose           = new Pose(-1,-1,0);
-    this._map                  = null;
     this._wallCellVisualSize   = 0; // TODO consider renaming this to something like "gridMultiplier" or "gridToScreenRatio"
     this._wallGridVisualWidth  = 0;
     this._wallGridVisualHeight = 0;
-
-    // Fix the drawable area dimensions
-    this._screen.height = this._screenHeight;
-    this._screen.width  = this._screenWidth;
-
 //    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 
     this._PreRenderPlayerAvatar();
 }
 
-Renderer2D.prototype.SetPlayerPose = function(pose) {
-    this._playerPose = pose;
-};
+Renderer2D.prototype = Object.create(Renderer.prototype);
+Renderer2D.prototype.constructor = Renderer2D;
 
-Renderer2D.prototype.SetMap = function(map) {
+Renderer2D.prototype.SetMap = function(map) { // override
+    "use strict";
     this._map = map;
-
     this._CalculateWallGridVisualDimensions();
     this._PreRenderWallGrid();
+    return this;
 };
 
 
