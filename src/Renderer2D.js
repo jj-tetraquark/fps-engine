@@ -12,7 +12,6 @@ function Renderer2D(canvasElementId) {
     this._wallCellVisualSize   = 0; // TODO consider renaming this to something like "gridMultiplier" or "gridToScreenRatio"
     this._wallGridVisualWidth  = 0;
     this._wallGridVisualHeight = 0;
-//    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 
     this._PreRenderPlayerAvatar();
 }

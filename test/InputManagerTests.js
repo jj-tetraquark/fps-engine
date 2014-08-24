@@ -1,13 +1,26 @@
+// Custom event polyfill
+(function () {
+    function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+    window.CustomEvent = CustomEvent;
+})();
+
 function GenerateMouseEvent(newX, newY) {
     var event = document.createEvent('MouseEvents'); // change this to use new MouseMove when phantomjs supports it
-    event.initMouseEvent('mousemove', true, true, window, 0, 
+    event.initMouseEvent('mousemove', true, true, window, 0,
          newX, newY, newX, newY, false, false, false, false, 0, null);
     document.dispatchEvent(event);
 }
 
 function GenerateKeyboardEvent(key, upOrDown) {
     var eventType = upOrDown == 'up' ? 'keyup' : 'keydown';
-    var keyCode; 
+    var keyCode;
 
     key = key.toUpperCase();
 
@@ -33,6 +46,11 @@ function GenerateKeyboardEvent(key, upOrDown) {
         keyCode = key.charCodeAt();
     }
     var event = window.crossBrowser_initKeyboardEvent(eventType, { keyCode: keyCode});
+    document.dispatchEvent(event);
+}
+
+function GeneratePointerLockEvent() {
+    var event = CustomEvent('pointerlockchange', {}); // TODO: Maybe include tests for vendor prefixes
     document.dispatchEvent(event);
 }
 
@@ -73,7 +91,7 @@ QUnit.test("Test InputManager captures and handles mouse movement", function(ass
 
 QUnit.test("Test mouse movement is zero after a movement and then a stop", function(assert) {
     var inputManager = new InputManager();
-    
+
     GenerateMouseEvent(100, 400);
     var movement = inputManager.GetInput();
     assert.notEqual(movement.mouseDX, 0, "Should have registered movement");
@@ -86,7 +104,7 @@ QUnit.test("Test mouse movement is zero after a movement and then a stop", funct
 });
 
 
-QUnit.test("Test WASD keyboard input registers", function(assert) { 
+QUnit.test("Test WASD keyboard input registers", function(assert) {
     var inputManager = new InputManager();
 
     try {
@@ -98,8 +116,8 @@ QUnit.test("Test WASD keyboard input registers", function(assert) {
         assert.ok(true, "Dummy test to get grunt qunit to pass");
         return;
     }
-    
-    var mappings = { 
+
+    var mappings = {
         'W' : 'up',
         'A' : 'left',
         'S' : 'down',
@@ -107,7 +125,7 @@ QUnit.test("Test WASD keyboard input registers", function(assert) {
     };
 
     for (var key in mappings) {
-        GenerateKeyboardEvent(key, 'down'); 
+        GenerateKeyboardEvent(key, 'down');
         var input = inputManager.GetInput();
         assert.ok(input[mappings[key]], key + " button was pressed, should have registered as '" + mappings[key] + "'");
 
@@ -115,4 +133,20 @@ QUnit.test("Test WASD keyboard input registers", function(assert) {
         input = inputManager.GetInput();
         assert.ok(!input[mappings[key]], key + " button was unpressed, '" + mappings[key] + "' should not be registered");
     }
+});
+
+QUnit.test("Test pointerlock and mouse movement", function(assert) {
+    var inputManager = new InputManager();
+
+    GeneratePointerLockEvent();
+
+    // mouse clientX/Y does not change during a pointer lock so we need to unbind the event
+    var mouseXPos = inputManager._mouseXPosition;
+    var mouseYPos = inputManager._mouseYPosition;
+    GenerateMouseEvent(mouseXPos + 100, mouseYPos + 100);
+
+    var movement = inputManager.GetInput();
+    assert.equal(movement.mouseDX, 0, "Pointer is locked, there shouldn't have been any registered client movement");
+    assert.equal(movement.mouseDY, 0, "Pointer is locked, there shouldn't have been any registered client movement");
+
 });

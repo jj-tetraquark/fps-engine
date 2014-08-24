@@ -11,7 +11,6 @@ function Renderer3D(canvasElementId) {
     this._spacing        = this._screenWidth / this._resolution;
     this._columnWidth    = Math.ceil(this._spacing);
 
-//    this.canvas.addEventListener('click', this.canvas.requestPointerLock, false); // TODO : Get this working
 }
 
 Renderer3D.prototype = Object.create(Renderer.prototype);

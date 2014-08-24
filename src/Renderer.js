@@ -20,6 +20,8 @@ function Renderer(canvasElementId) {
     // Fix the drawable area dimensions
     this._screen.height = this._screenHeight;
     this._screen.width  = this._screenWidth;
+
+    this._screen.addEventListener('click', this._screen.requestPointerLock, false);
 }
 
 Renderer.prototype.SetPlayerPose = function(pose) {
