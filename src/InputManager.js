@@ -16,6 +16,8 @@ function InputManager() {
     this._OnMouseMoveImpl = this._UnlockedOnMouseMove;
     document.addEventListener('mousemove', this.OnMouseMove.bind(this), false);
     document.addEventListener('pointerlockchange', this.OnPointerLockChange.bind(this), false);
+    document.addEventListener('webkitpointerlockchange', this.OnPointerLockChange.bind(this), false);
+    document.addEventListener('mozpointerlockchange', this.OnPointerLockChange.bind(this), false); // Frakin' vendor prefixes
 }
 
 InputManager.prototype.GetInput = function() {
@@ -46,6 +48,19 @@ InputManager.prototype._UnlockedOnMouseMove = function(event) {
 };
 
 InputManager.prototype._LockedOnMouseMove = function(event) {
+    var dX =  event.movementX       ||
+              event.mozMovementX    ||
+              event.webkitMovementX ||
+              0;
+
+
+    var dY = event.movementY       ||
+             event.mozMovementY    ||
+             event.webkitMovementY ||
+             0;
+
+    this._mouseXMovement = dX/window.innerWidth;
+    this._mouseYMovement = dY/window.innerHeight;
 };
 
 

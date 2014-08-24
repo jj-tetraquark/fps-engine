@@ -18,6 +18,19 @@ function GenerateMouseEvent(newX, newY) {
     document.dispatchEvent(event);
 }
 
+// This currently doesn't work because movementX is readonly
+function GenerateLockedMouseEvent(dX, dY) {
+    var event = new MouseEvent('mousemove', {
+                    movementX : dX,
+                    movementY : dY,
+                    webkitMovementX : dX,
+                    webkitMovementY : dY,
+                    mozMovementX : dX,
+                    mozMovementY : dY
+    });
+    document.dispatchEvent(event);
+}
+
 function GenerateKeyboardEvent(key, upOrDown) {
     var eventType = upOrDown == 'up' ? 'keyup' : 'keydown';
     var keyCode;
@@ -153,7 +166,9 @@ QUnit.test("Test pointerlock and mouse movement", function(assert) {
     GenerateMouseEvent(mouseXPos + 100, mouseYPos + 100);
 
     var movement = inputManager.GetInput();
-    assert.equal(movement.mouseDX, 0, "Pointer is locked, there shouldn't have been any registered client movement");
-    assert.equal(movement.mouseDY, 0, "Pointer is locked, there shouldn't have been any registered client movement");
+    assert.equal(movement.mouseDX, 0, "Pointer is locked, there shouldn't have been any registered clientX movement");
+    assert.equal(movement.mouseDY, 0, "Pointer is locked, there shouldn't have been any registered clientY movement");
+
+    // Can't test beyond this because MouseEvents are readonly
 
 });
