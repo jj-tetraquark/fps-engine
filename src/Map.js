@@ -45,7 +45,6 @@ Map.prototype.HasWallAt = function(x,y) {
 
 Map.prototype.HasWallAtVertex = function(x, y) {
     assert((x % 1 === 0 || y % 1 === 0), "HasWallAtVertex must be called with at least one integers!");
-
     if (x % 1 === 0) {
         return this._ElementAt(x, y) > 0 || this._ElementAt(x - 1, y) > 0;
     } else if (y % 1 === 0) {
@@ -118,8 +117,7 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
-                Distance : Math.sqrt(rayDistance2),
-                Shadow : nextIntersection.shadow
+                Distance : Math.sqrt(rayDistance2)
             };
         }
 
@@ -153,8 +151,7 @@ GridMapRayCaster.prototype.GetNextXIntersection = function(localOrigin) {
     return {
         X : nextXVertex,
         Y : localOrigin.Y + changeInY,
-        distance2 : distance2,
-        shadow: this._dy < 0 ? 2 : 1
+        distance2 : distance2
     };
 };
 
@@ -171,7 +168,6 @@ GridMapRayCaster.prototype.GetNextYIntersection = function(localOrigin) {
     return {
         X : localOrigin.X + changeInX,
         Y : nextYVertex,
-        distance2 : distance2,
-        shadow: this._dx < 0 ? 2 : 0
+        distance2 : distance2
     };
 };

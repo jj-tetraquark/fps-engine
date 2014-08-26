@@ -71,11 +71,18 @@ Renderer3D.prototype._DrawWalls = function() {
 
         var globalAngle = angle + this._playerPose.Angle;
         var ray = this._map.CastRay(globalAngle, this._playerPose, this._drawDistance);
+        this._ApplyShadows(ray, globalAngle);
         this._DrawWallColumn(column, ray, angle);
     }
     this._ctx.restore();
 };
 
+Renderer3D.prototype._ApplyShadows = function(ray, globalAngle) {
+    // basic single direction light source
+    var angle = Math.abs(globalAngle % (2*Math.PI)); // bound angle between 0 and 2*PI
+    var shadow = Math.round(angle / Math.PI);
+    ray.Shadow = shadow;
+};
 
 Renderer3D.prototype._DrawWallColumn = function(column, ray, angle) {
     "use strict";
