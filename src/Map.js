@@ -46,11 +46,25 @@ Map.prototype.HasWallAt = function(x,y) {
 Map.prototype.HasWallAtVertex = function(x, y) {
     assert((x % 1 === 0 || y % 1 === 0), "HasWallAtVertex must be called with at least one integers!");
 
+    var wall = { result: false, normal: -1 };
     if (x % 1 === 0) {
-        return this._ElementAt(x, y) > 0 || this._ElementAt(x - 1, y) > 0;
+        if(this._ElementAt(x, y) > 0) { // WESTERN WALL
+           wall.result = true;
+           wall.normal = 1.5 * Math.PI;
+        } else if (this._ElementAt(x - 1, y) > 0) { // EASTERN WALL
+           wall.result = true;
+           wall.normal = 0.5 * Math.PI;
+        }
     } else if (y % 1 === 0) {
-        return this._ElementAt(x, y) > 0 || this._ElementAt(x, y - 1) > 0;
+        if(this._ElementAt(x, y) > 0) { // NORTHERN WALL
+           wall.result = true;
+           wall.normal = Math.PI;
+        } else if(this._ElementAt(x, y - 1) > 0) { // SOURTHERN WALL
+            wall.result = true;
+            wall.normal = 0;
+        }
     }
+    return wall;
 
 };
 
@@ -114,12 +128,13 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     var rayDistance2 = Math.pow(nextIntersection.X - origin.X, 2) + Math.pow(nextIntersection.Y - origin.Y, 2);
 
     do {
-        if (this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y) || this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
+        var wallAtVertex = this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y);
+        if (wallAtVertex.result) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
                 Distance : Math.sqrt(rayDistance2),
-                Shadow : nextIntersection.shadow
+                Shadow : nextIntersection.shadow // TODO - pass on the wall normal rather than shadow
             };
         }
 

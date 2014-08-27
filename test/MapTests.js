@@ -57,11 +57,23 @@ QUnit.test("Test WallAtVertex", function(assert) {
     assert.throws(function() { testMap.HasWallAtVertex(0.5, 0.5); },
         "Two non-integer coords, should have thrown an exception");
 
-    assert.ok(!testMap.HasWallAtVertex(0, 0), "Should not have found wall");
-    assert.ok(testMap.HasWallAtVertex(1, 1.5), "Should have found western wall");
-    assert.ok(testMap.HasWallAtVertex(1.5, 1), "Should have found northern wall");
-    assert.ok(testMap.HasWallAtVertex(2, 1.5), "Should have found eastern wall");
-    assert.ok(testMap.HasWallAtVertex(1.5, 2), "Should have found southern wall");
+    assert.ok(!testMap.HasWallAtVertex(0, 0).result, "Should not have found wall");
+
+    var test1 = testMap.HasWallAtVertex(1, 1.5);
+    assert.ok(test1.result, "Should have found western wall");
+    assert.equal(test1.normal, 1.5 * Math.PI, "Western wall should have normal angle of 1.5 PI");
+
+    var test2 = testMap.HasWallAtVertex(1.5, 1);
+    assert.ok(test2.result, "Should have found northern wall");
+    assert.equal(test2.normal, Math.PI, "Western wall should have normal angle of PI");
+
+    var test3 = testMap.HasWallAtVertex(2, 1.5);
+    assert.ok(test3.result, "Should have found eastern wall");
+    assert.equal(test3.normal, Math.PI / 2, "Western wall should have normal angle of PI/2");
+
+    var test4 = testMap.HasWallAtVertex(1.5, 2);
+    assert.ok(test4.result, "Should have found southern wall");
+    assert.equal(test4.normal, 0, "Western wall should have normal angle of 0");
 });
 
 QUnit.test("Test ray casting", function(assert) {
