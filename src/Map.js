@@ -72,13 +72,6 @@ Map.prototype.CastRay = function(angle, origin, range) {
     return this._rayCaster.Cast(angle, origin, range);
 };
 
-Map.prototype.GetDistance = function(x1, y1, x2, y2) {
-    // pythagorus
-    var side1Squared = Math.pow(x1 - x2, 2);
-    var side2Squared = Math.pow(y1 - y2, 2);
-    return Math.sqrt(side1Squared + side2Squared);
-};
-
 Map.prototype.GetWallGridWidth = function() {
     return this._wallGridWidth;
 };
@@ -134,7 +127,7 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
                 Distance : Math.sqrt(rayDistance2),
-                Shadow : nextIntersection.shadow // TODO - pass on the wall normal rather than shadow
+                Normal : wallAtVertex.normal
             };
         }
 
