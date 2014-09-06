@@ -15,6 +15,7 @@ function Map(lengthOrJson, height) {
         this.AssignFromJson(lengthOrJson);
     }
 
+    this._visibleBoundaries = true;
     this._rayCaster = new GridMapRayCaster(this);
 }
 
@@ -35,6 +36,14 @@ Map.prototype.Randomize = function(json) {
     }
 };
 
+Map.prototype.SetMapBoundariesInvisible = function() {
+    this._visibleBoundaries = false;
+};
+
+Map.prototype.SetMapBoundariesVisible = function() {
+    this._visibleBoundaries = true;
+};
+
 Map.prototype.HasWallAt = function(x,y) {
     if (this._CoordsOutOfRange(x, y)) {
         // If the element is outside the map, it's treated as wall
@@ -43,6 +52,7 @@ Map.prototype.HasWallAt = function(x,y) {
     return this._ElementAt(x, y) > 0;
 };
 
+// TODO - refactor this
 Map.prototype.HasWallAtVertex = function(x, y) {
     assert((x % 1 === 0 || y % 1 === 0), "HasWallAtVertex must be called with at least one integers!");
     var wall = { result: false, normal: -1 };
@@ -53,6 +63,14 @@ Map.prototype.HasWallAtVertex = function(x, y) {
         } else if (this._ElementAt(x - 1, y) > 0) { // EASTERN WALL
            wall.result = true;
            wall.normal = 0.5 * Math.PI;
+        } else if(this._visibleBoundaries) {
+            if (x === 0) {
+                wall.result = true;
+                wall.normal = Math.PI/2;
+            } else if (x === this._wallGridWidth) {
+                wall.result = true;
+                wall.normal = -Math.PI/2;
+            }
         }
     } else if (y % 1 === 0) {
         if(this._ElementAt(x, y) > 0) { // NORTHERN WALL
@@ -61,6 +79,16 @@ Map.prototype.HasWallAtVertex = function(x, y) {
         } else if(this._ElementAt(x, y - 1) > 0) { // SOURTHERN WALL
             wall.result = true;
             wall.normal = 0;
+        }
+        else if (this._visibleBoundaries) {
+            if (y === 0) {
+                wall.result = true;
+                wall.normal = 0;
+            }
+            else if (y === this._wallGridHeight) {
+                wall.result = true;
+                wall.normal = Math.PI;
+            }
         }
     }
     return wall;
@@ -102,18 +130,21 @@ function GridMapRayCaster(map) {
     this._dy = 0;
     this._gradient = 0;
 
-    this._pointInfinity = {
-        X : Infinity,
-        Y : Infinity,
-        Distance : Infinity
-    };
 }
+
+
+GridMapRayCaster.prototype._pointInfinity = {
+    X : Infinity,
+    Y : Infinity,
+    Distance : Infinity,
+    Normal : -1
+};
 
 GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
 
-    this._dx = Math.sin(angle);
-    this._dy = Math.cos(angle);
-    this._gradient = (this._dy/this._dx).toDecPlaces(6);
+    this._dx = Math.sin(angle).toDecPlaces(6); // floating point weirdness
+    this._dy = Math.cos(angle).toDecPlaces(6);
+    this._gradient = this._dy/this._dx
     var range2 = Math.pow(range, 2);
 
     var nextIntersection = this.GetNextGridLineIntersection(origin);
@@ -125,7 +156,7 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
-                Distance : Math.sqrt(rayDistance2),
+                Distance : Math.sqrt(rayDistance2).toDecPlaces(6),
                 Normal : wallAtVertex.normal
             };
         }
@@ -154,7 +185,6 @@ GridMapRayCaster.prototype.GetNextXIntersection = function(localOrigin) {
 
     var changeInX = nextXVertex - localOrigin.X;
     var changeInY = changeInX * this._gradient;
-
     var distance2 = Math.pow(changeInX, 2) + Math.pow(changeInY, 2);
 
     return {
