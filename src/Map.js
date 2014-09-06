@@ -45,23 +45,30 @@ Map.prototype.HasWallAt = function(x,y) {
 
 Map.prototype.HasWallAtVertex = function(x, y) {
     assert((x % 1 === 0 || y % 1 === 0), "HasWallAtVertex must be called with at least one integers!");
+    var wall = { result: false, normal: -1 };
     if (x % 1 === 0) {
-        return this._ElementAt(x, y) > 0 || this._ElementAt(x - 1, y) > 0;
+        if(this._ElementAt(x, y) > 0) { // WESTERN WALL
+           wall.result = true;
+           wall.normal = 1.5 * Math.PI;
+        } else if (this._ElementAt(x - 1, y) > 0) { // EASTERN WALL
+           wall.result = true;
+           wall.normal = 0.5 * Math.PI;
+        }
     } else if (y % 1 === 0) {
-        return this._ElementAt(x, y) > 0 || this._ElementAt(x, y - 1) > 0;
+        if(this._ElementAt(x, y) > 0) { // NORTHERN WALL
+           wall.result = true;
+           wall.normal = Math.PI;
+        } else if(this._ElementAt(x, y - 1) > 0) { // SOURTHERN WALL
+            wall.result = true;
+            wall.normal = 0;
+        }
     }
+    return wall;
 
 };
 
 Map.prototype.CastRay = function(angle, origin, range) {
     return this._rayCaster.Cast(angle, origin, range);
-};
-
-Map.prototype.GetDistance = function(x1, y1, x2, y2) {
-    // pythagorus
-    var side1Squared = Math.pow(x1 - x2, 2);
-    var side2Squared = Math.pow(y1 - y2, 2);
-    return Math.sqrt(side1Squared + side2Squared);
 };
 
 Map.prototype.GetWallGridWidth = function() {
@@ -113,11 +120,17 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
     var rayDistance2 = Math.pow(nextIntersection.X - origin.X, 2) + Math.pow(nextIntersection.Y - origin.Y, 2);
 
     do {
-        if (this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y) || this._map.HasWallAt(nextIntersection.X, nextIntersection.Y)) {
+        var wallAtVertex = this._map.HasWallAtVertex(nextIntersection.X, nextIntersection.Y);
+        if (wallAtVertex.result) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
+<<<<<<< HEAD
                 Distance : Math.sqrt(rayDistance2)
+=======
+                Distance : Math.sqrt(rayDistance2),
+                Normal : wallAtVertex.normal
+>>>>>>> 968540e7393b90ec0d49568dd5daf316f0f1bd6e
             };
         }
 
