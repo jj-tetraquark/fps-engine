@@ -125,12 +125,8 @@ GridMapRayCaster.prototype.Cast = function(angle, origin, range) {
             return {
                 X : nextIntersection.X,
                 Y : nextIntersection.Y,
-<<<<<<< HEAD
-                Distance : Math.sqrt(rayDistance2)
-=======
                 Distance : Math.sqrt(rayDistance2),
                 Normal : wallAtVertex.normal
->>>>>>> 968540e7393b90ec0d49568dd5daf316f0f1bd6e
             };
         }
 

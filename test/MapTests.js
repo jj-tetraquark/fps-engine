@@ -154,6 +154,16 @@ QUnit.test("Test ray casting", function(assert) {
     rayDestination = map7.CastRay(Math.PI/2, Pose(1.2, 1.5), 8);
     assert.deepEqual(rayDestination, { X : 2, Y : 1.5, Distance : 0.8, Normal : 1.5 * Math.PI }, "Need to handle ray distances less than 1 grid unit");
 
+    // Map boundary visible by default
     rayDestination = map7.CastRay(-Math.PI/2, Pose(1.2, 1.5, 0), 8);
     assert.deepEqual(rayDestination, { X : 0, Y : 1.5, Distance: 1.2, Normal : Math.PI/2 });
+
+    map7.SetMapBoundaryVisible();
+    rayDestination = map7.CastRay(-Math.PI/2, Pose(1.2, 1.5, 0), 8);
+    assert.deepEqual(rayDestination, { X : 0, Y : 1.5, Distance: 1.2, Normal : Math.PI/2 });
+
+    map7.SetMapBoundaryInvisible();
+    rayDestination = map7.CastRay(-Math.PI/2, Pose(1.2, 1.5, 0), 8);
+    assert.deepEqual(rayDestination, { X : Infinity, Y : Infinity, Distance: Infinity, Normal : 0});
+
 });
